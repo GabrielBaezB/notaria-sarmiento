@@ -1,2 +1,13 @@
-node_modules
-.next
+# Dependencias
+node_modules/
+
+# Build de Next.js
+.next/
+
+# Variables de entorno
+.env.local
+# .env.production  # descomenta si no quieres subirlo
+
+# IDEs y SO
+.vscode/
+.DS_Store
