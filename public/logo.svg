@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="600" height="80" viewBox="0 0 600 80" fill="none">
+  <!-- Siglas ESM agrandadas -->
+  <text x="5" y="60"
+        font-family="Times New Roman, serif"
+        font-size="75"
+        font-weight="bold"
+        fill="#FFFFFF">
+    ESM
+  </text>
+
+  <!-- Línea divisoria ajustada cerca de ESM -->
+  <line x1="180" y1="0" x2="180" y2="100"
+        stroke="#FFFFFF" stroke-width="3"/>
+
+  <!-- Texto principal desplazado a la derecha de la línea -->
+  <text x="200" y="32"
+        font-family="Times New Roman, serif"
+        font-size="26"
+        fill="#FFFFFF">
+    NOTARÍA
+  </text>
+  <text x="200" y="58"
+        font-family="Times New Roman, serif"
+        font-size="27"
+        fill="#FFFFFF">
+    EMILIO SARMIENTO MORENO
+  </text>
+
+  <!-- Texto secundario arriba derecha -->
+  <text x="590" y="18"
+        font-family="Times New Roman, serif"
+        font-size="16"
+        fill="#FFFFFF"
+        text-anchor="end">
+    9.ª NOTARÍA DE VALPARAÍSO
+  </text>
+</svg>
