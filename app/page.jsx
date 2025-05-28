@@ -1,10 +1,14 @@
 // app/page.jsx
-import Header from '../components/Header';
-import Hero from '../components/Hero';
-import ServiciosSection from '../components/ServiciosSection';
-import Ubicacion from '../components/Ubicacion';
-import Contacto from '../components/Contacto';
-import Footer from '../components/Footer';
+'use client';
+
+import dynamic from 'next/dynamic';
+
+const Header = dynamic(() => import('../components/Header'));
+const Hero = dynamic(() => import('../components/Hero'));
+const ServiciosSection = dynamic(() => import('../components/ServiciosSection'));
+const Ubicacion = dynamic(() => import('../components/Ubicacion'), { ssr: false });
+const Contacto = dynamic(() => import('../components/Contacto'), { ssr: false });
+const Footer = dynamic(() => import('../components/Footer'));
 
 export default function Home() {
   return (
