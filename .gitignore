@@ -7,6 +7,9 @@ node_modules/
 # Variables de entorno
 .env.local
 # .env.production  # descomenta si no quieres subirlo
+.unlighthouse
+
+out/
 
 # IDEs y SO
 .vscode/

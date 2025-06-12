@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "scripts": {
     "dev": "CHOKIDAR_USEPOLLING=true next dev",
-    "build": "next build",
+    "build": "cross-env NODE_ENV=production next build",
+    "postbuild": "next-sitemap",
     "start": "next start",
     "export": "next export"
   },
@@ -11,6 +12,7 @@
     "autoprefixer": "^10.4.0",
     "framer-motion": "^12.12.1",
     "next": "15.3.2",
+    "next-sitemap": "^4.2.3",
     "postcss": "^8.4.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",

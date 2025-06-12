@@ -1,5 +1,5 @@
 // components/Ubicacion.jsx
-export function Ubicacion() {
+export default function Ubicacion() {
   return (
     <section id="ubicacion" className="py-20 px-6 bg-notaria-gris">
       <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 items-start">
