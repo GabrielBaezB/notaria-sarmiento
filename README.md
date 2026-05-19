@@ -1,4 +1,4 @@
-de# Notaría Sarmiento Moreno - Valparaíso
+# Notaría Sarmiento Moreno - Valparaíso
 
 Sitio web oficial de la Notaría Sarmiento Moreno, ubicada en Chacabuco 2845, Valparaíso. Servicios notariales profesionales frente al terminal de buses y a pasos del Congreso Nacional.
 
