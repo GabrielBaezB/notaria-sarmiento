@@ -1,9 +1,105 @@
-# *
+# Robots.txt para Notaría Sarmiento Moreno - Valparaíso
+# https://notariasarmiento.cl
+
+# Reglas generales para todos los bots
 User-agent: *
 Allow: /
+Disallow: /api/
+Disallow: /_next/
+Disallow: /static/
+Disallow: /.well-known/
+Disallow: /admin/
+Disallow: /private/
+Allow: /_next/static/css/
+Allow: /_next/static/media/
+Allow: /_next/static/js/
 
-# Host
-Host: https://www.notariasarmiento.cl
+# Crawl-delay para evitar sobrecarga del servidor
+Crawl-delay: 1
+
+# Googlebot - Prioridad alta
+User-agent: Googlebot
+Allow: /
+Crawl-delay: 0
+Disallow: /api/
+Disallow: /_next/
+
+# Googlebot-Image - Para imágenes
+User-agent: Googlebot-Image
+Allow: /
+Crawl-delay: 0
+Disallow: /api/
+
+# Bingbot - Prioridad alta
+User-agent: bingbot
+Allow: /
+Crawl-delay: 0
+Disallow: /api/
+Disallow: /_next/
+
+# Yandex
+User-agent: Yandex
+Allow: /
+Crawl-delay: 1
+Disallow: /api/
+Disallow: /_next/
+
+# Baiduspider
+User-agent: Baiduspider
+Allow: /
+Crawl-delay: 2
+Disallow: /api/
+Disallow: /_next/
+
+# DuckDuckBot
+User-agent: DuckDuckBot
+Allow: /
+Crawl-delay: 1
+Disallow: /api/
+Disallow: /_next/
+
+# Facebook
+User-agent: facebookexternalhit
+Allow: /
+Crawl-delay: 1
+Disallow: /api/
+Disallow: /_next/
+
+# Twitter
+User-agent: Twitterbot
+Allow: /
+Crawl-delay: 1
+Disallow: /api/
+Disallow: /_next/
+
+# LinkedIn
+User-agent: LinkedInBot
+Allow: /
+Crawl-delay: 1
+Disallow: /api/
+Disallow: /_next/
+
+# WhatsApp
+User-agent: WhatsApp
+Allow: /
+Crawl-delay: 1
+Disallow: /api/
+Disallow: /_next/
+
+# Telegram
+User-agent: TelegramBot
+Allow: /
+Crawl-delay: 1
+Disallow: /api/
+Disallow: /_next/
 
 # Sitemaps
-Sitemap: https://www.notariasarmiento.cl/sitemap.xml
+Sitemap: https://notariasarmiento.cl/sitemap.xml
+
+# Host preferido (canonical)
+Host: https://notariasarmiento.cl
+
+# Información adicional para SEO
+# Última actualización: 2024
+# Servicios: Escrituras públicas, poderes simples, autorizaciones de viaje, compraventa de inmuebles
+# Ubicación: Chacabuco 2843, Valparaíso, Chile

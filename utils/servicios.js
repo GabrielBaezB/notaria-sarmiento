@@ -111,4 +111,57 @@ export const SERVICIOS = [
       "Exhibir el original a legalizar."
     ],
   },
+  {
+    title: 'Poder Simple o Especial',
+    icon: HiOutlineCheckCircle,
+    requisitos: [
+      "Comparecencia personal del otorgante.",
+      "Cédula de identidad vigente.",
+      "Redacción del mandato o indicación del propósito."
+    ],
+  },
+  {
+    title: 'Declaración Jurada Simple',
+    icon: HiOutlineCheckCircle,
+    requisitos: [
+      "Comparecencia personal.",
+      "Cédula de identidad vigente.",
+      "Texto de la declaración o instrucciones para su redacción."
+    ],
+  },
+  {
+    title: 'Revocación de Poder',
+    icon: HiOutlineCheckCircle,
+    requisitos: [
+      "Comparecencia del revocante.",
+      "Datos o copia del poder a revocar.",
+      "Cédula de identidad vigente."
+    ],
+  },
+  {
+    title: 'Autorización de Viaje de Menores (Dentro de Chile)',
+    icon: HiOutlineUserGroup,
+    requisitos: [
+      "Comparecencia de los padres o tutores.",
+      "Cédula de identidad vigente de los autorizantes.",
+      "Certificado de nacimiento del menor."
+    ],
+  },
+  {
+    title: 'Certificación de Firmas',
+    icon: HiOutlineCheckCircle,
+    requisitos: [
+      "Comparecencia personal del firmante.",
+      "Cédula de identidad vigente.",
+      "Documento a firmar."
+    ],
+  },
+  {
+    title: 'Tarifas Notariales',
+    icon: HiOutlineDocumentText,
+    href: 'https://www.bcn.cl/leychile/navegar?idNorma=127917&idParte=',
+    requisitos: [
+      "Haga clic en esta tarjeta para consultar el arancel oficial en el sitio de la Biblioteca del Congreso Nacional."
+    ],
+  },
 ];

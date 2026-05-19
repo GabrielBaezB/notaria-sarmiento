@@ -1,16 +1,48 @@
-# Dependencias
-node_modules/
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
-# Build de Next.js
-.next/
+# dependencies
+/node_modules
+/.pnp
+.pnp.js
 
-# Variables de entorno
-.env.local
-# .env.production  # descomenta si no quieres subirlo
+# testing
+/coverage
+
+# next.js
+/.next/
+/out/
+
+# production
+/build
+
+# misc
+.DS_Store
+*.pem
+
+# debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# local env files
+.env*.local
+.env
+
+# vercel
+.vercel
+
+# typescript
+*.tsbuildinfo
+next-env.d.ts
+
+# lighthouse reports
+/lighthouse-reports
+*.lighthouse.report.html
 .unlighthouse
 
-out/
+# Archivos pesados / Backups
+*.zip
 
-# IDEs y SO
-.vscode/
-.DS_Store
+# Archivos de datos en crudo
+nuevos-datos.txt
+nuevos-datos.xlsx

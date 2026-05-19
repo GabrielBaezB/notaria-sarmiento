@@ -20,7 +20,7 @@ const ModalInfo = ({ show, onClose }) => {
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 p-4 overflow-y-auto">
       <div className="bg-white max-w-4xl w-full p-6 rounded-lg shadow-lg">
         <div className="flex justify-between items-center mb-4">
-          <h2 className="text-xl font-semibold">Turno Notarial - {notariasMes.mes}</h2>
+          <h1 className="text-xl font-semibold">Turno Notarial - {notariasMes.mes}</h1>
           <button onClick={onClose} className="text-gray-600 hover:text-red-500 text-2xl font-bold">&times;</button>
         </div>
         <div className="space-y-6 max-h-[70vh] overflow-y-auto text-sm">
@@ -29,9 +29,9 @@ const ModalInfo = ({ show, onClose }) => {
             const data = notariasMes[zona];
             return data ? (
               <div key={zona}>
-                <h3 className="text-lg font-bold capitalize mb-2">
+                <h2 className="text-lg font-bold capitalize mb-2">
                   {zona === "valparaiso" ? "Valparaíso" : "Viña del Mar"}
-                </h3>
+                </h2>
                 <div className="border-b pb-2">
                   <p><strong>Oficio:</strong> {data.oficio}</p>
                   <p><strong>Notario(a):</strong> {data.notario}</p>
@@ -59,7 +59,7 @@ const ModalInfo = ({ show, onClose }) => {
 
           {/* Conservadores siempre visibles */}
           <div>
-            <h3 className="text-lg font-bold mb-2">Conservadores</h3>
+            <h2 className="text-lg font-bold mb-2">Conservadores</h2>
             <div className="space-y-4">
               {turnosNotarias.conservadores.map((c, i) => (
                 <div key={i} className="border-b pb-2">
