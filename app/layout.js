@@ -5,6 +5,7 @@ import ErrorBoundary from '../components/ErrorBoundary';
 import Header from '../components/Header';
 import GoogleTagManager from '../components/GoogleTagManager';
 import WhatsAppButtonWrapper from '../components/WhatsAppButtonWrapper';
+import KioskInactivityTimer from '../components/KioskInactivityTimer';
 
 export const metadata = {
   metadataBase: new URL('https://notariasarmiento.cl'),
@@ -122,6 +123,7 @@ export default function RootLayout({ children }) {
         <title>{metadata.title}</title>
       </head>
       <body className="font-sans">
+        <KioskInactivityTimer />
         {/* Google Tag Manager (noscript) */}
         <noscript>
           <iframe 

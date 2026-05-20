@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cápsulas Informativas - Notaría Sarmiento</title>
+    
+    <!-- Fuentes y Estilos -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Swiper CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css" />
+
+    <style>
+        :root {
+            --azul-oscuro: #1B2A41;
+            --dorado: #C5A880;
+            --blanco: #ffffff;
+            --azul-claro: #2A4063;
+        }
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            font-family: 'DM Sans', sans-serif;
+            background-color: var(--azul-oscuro);
+            color: var(--blanco);
+            overflow: hidden;
+            /* Previene selecciones de texto en kiosko */
+            user-select: none; 
+            -webkit-user-select: none;
+        }
+
+        /* Swiper Container */
+        .swiper {
+            width: 100%;
+            height: 100vh;
+        }
+
+        .swiper-slide {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 2rem;
+            box-sizing: border-box;
+            background: radial-gradient(circle at center, var(--azul-claro) 0%, var(--azul-oscuro) 100%);
+        }
+
+        /* Contenido de la Cápsula */
+        .capsula-content {
+            width: 80%;
+            max-width: 900px;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 4rem;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+            margin-bottom: 80px; /* Espacio para el botón flotante */
+        }
+
+        .swiper-slide-active .capsula-content {
+            animation: fadeIn 1.2s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h1 {
+            color: var(--dorado);
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            border-bottom: 2px solid var(--dorado);
+            padding-bottom: 1rem;
+            display: inline-block;
+        }
+
+        h2 {
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            font-weight: 500;
+        }
+
+        p {
+            font-size: 1.4rem;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+
+        .checklist {
+            text-align: left;
+            margin: 2.5rem auto;
+            max-width: 600px;
+        }
+
+        .checklist-item {
+            font-size: 1.4rem;
+            margin-bottom: 1.2rem;
+            display: flex;
+            align-items: flex-start;
+        }
+
+        .checklist-item i {
+            color: var(--dorado);
+            margin-right: 1.2rem;
+            margin-top: 0.4rem;
+            font-size: 1.5rem;
+        }
+
+        .footer-info {
+            margin-top: 3rem;
+            font-size: 1.2rem;
+            opacity: 0.9;
+            border-top: 1px solid rgba(255,255,255,0.2);
+            padding-top: 2rem;
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+        }
+
+        .footer-info span {
+            display: flex;
+            align-items: center;
+        }
+
+        .footer-info i {
+            color: var(--dorado);
+            margin-right: 0.8rem;
+            font-size: 1.4rem;
+        }
+
+        /* Mensaje de click al pie de página */
+        .click-mensaje {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: rgba(27, 42, 65, 0.95);
+            color: var(--dorado);
+            text-align: center;
+            padding: 1.5rem 0;
+            font-size: 1.5rem;
+            font-weight: 500;
+            z-index: 9999;
+            border-top: 1px solid rgba(197, 168, 128, 0.3);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            animation: pulseText 2.5s infinite;
+        }
+
+        @keyframes pulseText {
+            0% { opacity: 0.6; }
+            50% { opacity: 1; }
+            100% { opacity: 0.6; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Mensaje inferior -->
+    <div class="click-mensaje" id="btn-return">
+        HAGA CLIC EN LA PANTALLA PARA INICIAR TRÁMITE
+    </div>
+
+    <!-- Swiper -->
+    <div class="swiper mySwiper">
+        <div class="swiper-wrapper">
+
+            <!-- Cápsula 1 -->
+            <div class="swiper-slide">
+                <div class="capsula-content">
+                    <h1>1. AUTORIZACIÓN DE VIAJE PARA MENORES</h1>
+                    <h2>¿Su hijo o hija viaja fuera de Chile?</h2>
+                    <p>En Notaría Sarmiento realizamos autorizaciones de viaje para menores de edad de forma rápida y segura.</p>
+                    <p><strong>¿Qué necesitas?</strong></p>
+                    <div class="checklist">
+                        <div class="checklist-item"><i class="fa-solid fa-check-circle"></i> Certificado de nacimiento del menor</div>
+                        <div class="checklist-item"><i class="fa-solid fa-check-circle"></i> Cédula de identidad del padre o madre autorizante</div>
+                        <div class="checklist-item"><i class="fa-solid fa-check-circle"></i> Información del viaje (destino y plazo)</div>
+                    </div>
+                    <p>Evite inconvenientes al momento de salir del país.</p>
+                    <div class="footer-info">
+                        <span><i class="fa-solid fa-location-dot"></i> Chacabuco 2845, Valparaíso</span>
+                        <span><i class="fa-solid fa-globe"></i> www.notariasarmiento.cl</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Cápsula 2 -->
+            <div class="swiper-slide">
+                <div class="capsula-content">
+                    <h1>2. FINIQUITO LABORAL</h1>
+                    <h2>¿Necesitas ratificar un finiquito laboral?</h2>
+                    <p>En Notaría Sarmiento realizamos la autorización y ratificación de finiquitos laborales conforme a la normativa vigente.</p>
+                    <p><strong>Recuerda contar con los siguientes documentos:</strong></p>
+                    <div class="checklist">
+                        <div class="checklist-item"><i class="fa-solid fa-check-circle"></i> Cédula de identidad vigente del trabajador</div>
+                        <div class="checklist-item"><i class="fa-solid fa-check-circle"></i> Finiquito laboral</div>
+                        <div class="checklist-item"><i class="fa-solid fa-check-circle"></i> Documentos de estado de pago de cotizaciones y últimas liquidaciones de sueldo</div>
+                    </div>
+                    <p>Atención rápida y orientación en cada etapa del proceso.</p>
+                    <div class="footer-info">
+                        <span><i class="fa-solid fa-location-dot"></i> Novena Notaría de Valparaíso</span>
+                        <span><i class="fa-solid fa-globe"></i> www.notariasarmiento.cl</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Cápsula 3 -->
+            <div class="swiper-slide">
+                <div class="capsula-content">
+                    <h1>3. COMPRAVENTA DE VEHÍCULOS</h1>
+                    <h2>¿Vas a vender o comprar un vehículo?</h2>
+                    <p>Formaliza tu transferencia con seguridad y respaldo jurídico en Notaría Sarmiento.</p>
+                    <p><strong>Para el trámite, recuerda:</strong></p>
+                    <div class="checklist">
+                        <div class="checklist-item"><i class="fa-solid fa-check-circle"></i> Cédula de identidad vigente de vendedor y comprador</div>
+                        <div class="checklist-item"><i class="fa-solid fa-check-circle"></i> Permiso de circulación al día</div>
+                        <div class="checklist-item"><i class="fa-solid fa-check-circle"></i> Certificado de anotaciones vigente y multas (Servicio de Registro Civil)</div>
+                    </div>
+                    <p>Atención ágil y orientación durante todo el proceso.</p>
+                    <div class="footer-info">
+                        <span><i class="fa-solid fa-clock"></i> Atención de lunes a viernes</span>
+                        <span><i class="fa-solid fa-globe"></i> www.notariasarmiento.cl</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Cápsula 4 -->
+            <div class="swiper-slide">
+                <div class="capsula-content">
+                    <h1>4. DECLARACIONES JURADAS</h1>
+                    <h2>¿Necesitas una declaración jurada?</h2>
+                    <p>En Notaría Sarmiento autorizamos declaraciones juradas simples y especiales para diversos fines personales, laborales y administrativos.</p>
+                    <p>Trámite rápido y seguro.</p>
+                    <div class="checklist">
+                        <div class="checklist-item"><i class="fa-solid fa-check-circle"></i> Comparecencia personal</div>
+                        <div class="checklist-item"><i class="fa-solid fa-check-circle"></i> Cédula de identidad vigente del compareciente</div>
+                    </div>
+                    <div class="footer-info">
+                        <span><i class="fa-solid fa-location-dot"></i> Novena Notaría de Valparaíso</span>
+                        <span><i class="fa-solid fa-globe"></i> www.notariasarmiento.cl</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Cápsula 5 -->
+            <div class="swiper-slide">
+                <div class="capsula-content">
+                    <h1>5. MANDATOS Y PODERES</h1>
+                    <h2>¿Necesitas que otra persona te represente?</h2>
+                    <p>En Notaría Sarmiento realizamos mandatos y poderes para trámites bancarios, judiciales, administrativos y personales.</p>
+                    <div class="checklist">
+                        <div class="checklist-item"><i class="fa-solid fa-check-circle"></i> Poder simple</div>
+                        <div class="checklist-item"><i class="fa-solid fa-check-circle"></i> Mandato especial</div>
+                        <div class="checklist-item"><i class="fa-solid fa-check-circle"></i> Mandato por escritura pública</div>
+                    </div>
+                    <p>Consulta el tipo de documento que necesitas.</p>
+                    <div class="footer-info">
+                        <span><i class="fa-solid fa-globe"></i> www.notariasarmiento.cl</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Cápsula 6 -->
+            <div class="swiper-slide">
+                <div class="capsula-content">
+                    <h1>6. ESCRITURAS PÚBLICAS</h1>
+                    <h2>Las decisiones importantes requieren seguridad jurídica.</h2>
+                    <p>En Notaría Sarmiento elaboramos y autorizamos escrituras públicas con respaldo profesional y atención personalizada.</p>
+                    <div class="checklist">
+                        <div class="checklist-item"><i class="fa-solid fa-check-circle"></i> Compraventas y Cesiones de derechos</div>
+                        <div class="checklist-item"><i class="fa-solid fa-check-circle"></i> Testamentos y Usufructos</div>
+                        <div class="checklist-item"><i class="fa-solid fa-check-circle"></i> Constitución de sociedades (minuta redactada por abogado)</div>
+                        <div class="checklist-item"><i class="fa-solid fa-check-circle"></i> Reducciones a escritura pública y Protocolizaciones</div>
+                    </div>
+                    <div class="footer-info">
+                        <span><i class="fa-solid fa-location-dot"></i> Chacabuco 2845, Valparaíso</span>
+                        <span><i class="fa-solid fa-globe"></i> www.notariasarmiento.cl</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Cápsula 7 -->
+            <div class="swiper-slide">
+                <div class="capsula-content">
+                    <h1>7. AUTORIZACIÓN PARA SALIDA DE VEHÍCULOS</h1>
+                    <h2>¿Vas a salir del país con un vehículo?</h2>
+                    <p>En Notaría Sarmiento realizamos autorizaciones notariales para circulación y salida internacional de vehículos.</p>
+                    <p>Recuerde consultar previamente los documentos necesarios según el caso.</p>
+                    <div class="checklist">
+                        <div class="checklist-item"><i class="fa-solid fa-check-circle"></i> Certificado de anotaciones vigentes</div>
+                        <div class="checklist-item"><i class="fa-solid fa-check-circle"></i> Cédula de identidad vigente del dueño</div>
+                    </div>
+                    <div class="footer-info">
+                        <span><i class="fa-solid fa-globe"></i> www.notariasarmiento.cl</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Cápsula 8 -->
+            <div class="swiper-slide">
+                <div class="capsula-content">
+                    <h1>8. CONTRATOS DE ARRIENDO DE INMUEBLES</h1>
+                    <h2>¿Necesitas formalizar un arriendo de inmueble?</h2>
+                    <p>En Notaría Sarmiento autorizamos contratos de arriendo habitacional y comercial. La formalización notarial entrega mayor respaldo y seguridad para ambas partes.</p>
+                    <div class="checklist">
+                        <div class="checklist-item"><i class="fa-solid fa-check-circle"></i> Comparecencia de arrendador y arrendatario</div>
+                        <div class="checklist-item"><i class="fa-solid fa-check-circle"></i> Cédulas de identidad vigentes de los comparecientes</div>
+                        <div class="checklist-item"><i class="fa-solid fa-check-circle"></i> Certificado de dominio vigente del inmueble emitido por el CBR.</div>
+                    </div>
+                    <div class="footer-info">
+                        <span><i class="fa-solid fa-location-dot"></i> Novena Notaría de Valparaíso</span>
+                        <span><i class="fa-solid fa-globe"></i> www.notariasarmiento.cl</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Cápsula 9 -->
+            <div class="swiper-slide">
+                <div class="capsula-content">
+                    <h1>9. CONSTITUCIÓN DE SOCIEDADES</h1>
+                    <h2>¿Quieres iniciar un emprendimiento o empresa?</h2>
+                    <p>En Notaría Sarmiento le orientamos en la formalización de sociedades y constitución de empresas.</p>
+                    <div class="checklist">
+                        <div class="checklist-item"><i class="fa-solid fa-check-circle"></i> Escritura pública y Protocolización</div>
+                        <div class="checklist-item"><i class="fa-solid fa-check-circle"></i> Firma de socios</div>
+                        <div class="checklist-item"><i class="fa-solid fa-check-circle"></i> Firma de Empresa en un Día</div>
+                    </div>
+                    <p>Formalice su proyecto con respaldo jurídico.</p>
+                    <div class="footer-info">
+                        <span><i class="fa-solid fa-globe"></i> www.notariasarmiento.cl</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Cápsula 10 -->
+            <div class="swiper-slide">
+                <div class="capsula-content">
+                    <h1>10. COPIAS Y AUTORIZACIÓN DE DOCUMENTOS</h1>
+                    <h2>¿Necesitas autorizar una copia o certificar un documento?</h2>
+                    <p>En Notaría Sarmiento realizamos autorizaciones y certificaciones conforme a la normativa vigente.</p>
+                    <div class="checklist">
+                        <div class="checklist-item"><i class="fa-solid fa-check-circle"></i> Copias autorizadas</div>
+                        <div class="checklist-item"><i class="fa-solid fa-check-circle"></i> Certificación de firmas</div>
+                        <div class="checklist-item"><i class="fa-solid fa-check-circle"></i> Autorización de documentos</div>
+                    </div>
+                    <p>Atención profesional y segura.</p>
+                    <div class="footer-info">
+                        <span><i class="fa-solid fa-location-dot"></i> Chacabuco 2845, Valparaíso</span>
+                        <span><i class="fa-solid fa-globe"></i> www.notariasarmiento.cl</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Swiper JS -->
+    <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css"></script>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
+
+    <!-- Initialize Swiper -->
+    <script>
+        var swiper = new Swiper(".mySwiper", {
+            direction: 'horizontal',
+            loop: true,
+            effect: "fade", // Efecto de transición elegante
+            fadeEffect: {
+                crossFade: true
+            },
+            autoplay: {
+                delay: 6000, // 6 segundos por cápsula
+                disableOnInteraction: false,
+            },
+        });
+
+        // Asegurar que cualquier toque en la pantalla actúe como CTA para salir del Kiosko
+        document.body.addEventListener('click', function(e) {
+            // Si el click no fue en el botón CTA, redirigimos de todas formas como "toque en la pantalla"
+            if(e.target.id !== 'btn-return' && !e.target.closest('#btn-return')) {
+                window.location.href = '/';
+            }
+        });
+    </script>
+</body>
+</html>

@@ -23,19 +23,14 @@
 ## 🚀 **Fase 3: Funcionalidades Post-2026 (Corto Plazo)**
 
 ### 3.1 Páginas Adicionales
-- [ ] **Página de Horarios y Turnos**
-  - Horarios de atención interactivos
-  - Notarías de turno automatizadas
-  - Calendario de disponibilidad
-
-- [ ] **Página de FAQ**
+- [x] **Página de Horarios y Turnos**
+- [x] **Página de FAQ**
   - Preguntas frecuentes expandibles
   - Schema markup para FAQ
   - Categorías por servicio
 
-- [ ] **Página de Precios/Tarifas**
-  - Lista de precios por servicio
-  - Información sobre aranceles y medios de pago
+- [x] **Página de Precios/Tarifas**
+  - Enlace oficial integrado hacia BCN según solicitud del notario.
 
 ### 3.2 Componentes Mejorados
 - [ ] **Error Boundaries Globales**
