@@ -12,7 +12,13 @@ export default function Footer() {
               <p>📞 +56 51 2595840</p>
               <p>✉️ contacto@notariasarmiento.cl</p>
               <a href="/equipo" className="block text-gray-400 hover:text-notaria-dorado transition-colors pt-1">
-                Nómina suplentes y personal
+                Nómina de suplentes - Trabajadores remuneracion
+              </a>
+              <a href="https://www.infoprobidad.cl/Declaracion/Declaracion?ID=5116288" target="_blank" rel="noopener noreferrer" className="block text-gray-400 hover:text-notaria-dorado transition-colors pt-1">
+                Declaración de Intereses y Patrimonio
+              </a>
+              <a href="/balances-anuales" className="block text-gray-400 hover:text-notaria-dorado transition-colors pt-1">
+                Balances Anuales
               </a>
             </div>
           </div>
