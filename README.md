@@ -182,7 +182,7 @@ El sitio incluye configuración para:
 - **Dirección**: Chacabuco 2845, Valparaíso
 - **Teléfono**: +56 322548174
 - **Email**: contacto@notariasarmiento.cl
-- **Horarios**: Lunes a Jueves 09:00 - 14:00 y 15:00 - 17:30, Viernes 09:00 - 14:00 y 15:00 - 16:30
+- **Horarios**: Lunes a Jueves 09:00 - 14:00 y 15:00 - 17:30, Viernes 09:00 - 14:00 y 15:00 - 17:00
 
 ## 📄 Licencia
 

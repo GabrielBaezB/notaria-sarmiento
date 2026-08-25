@@ -98,14 +98,12 @@ export default function TerminosContent() {
                 <div className="bg-green-50 rounded-lg p-6 mb-4">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
-                      <h4 className="font-semibold text-gray-900">Lunes a Jueves</h4>
-                      <p className="text-gray-700">09:00 - 14:00 hrs</p>
-                      <p className="text-gray-700">15:00 - 17:30 hrs</p>
+                      <h4 className="font-semibold text-gray-900">Lunes a Viernes</h4>
+                      <p className="text-gray-700">09:00 - 16:30 hrs (horario continuo)</p>
                     </div>
                     <div>
-                      <h4 className="font-semibold text-gray-900">Viernes</h4>
-                      <p className="text-gray-700">09:00 - 14:00 hrs</p>
-                      <p className="text-gray-700">15:00 - 16:30 hrs</p>
+                      <h4 className="font-semibold text-gray-900">Sábado y Domingo</h4>
+                      <p className="text-gray-700">Cerrado</p>
                     </div>
                   </div>
                 </div>

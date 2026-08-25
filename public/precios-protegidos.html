@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="robots" content="noindex, nofollow, noarchive, nosnippet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Notaría Sarmiento Moreno - Aranceles y Precios 2026</title>
+    <style>
+        /* RESET & VARS */
+        :root {
+            --navy-primary: #1B2A41;
+            --navy-dark: #0F172A;
+            --gold-accent: #C5A880;
+            --gold-hover: #B3956B;
+            --bg-light: #F8FAFC;
+            --card-bg: #FFFFFF;
+            --text-main: #1E293B;
+            --text-muted: #64748B;
+            --border-color: #E2E8F0;
+            --danger-bg: #FEF2F2;
+            --danger-text: #991B1B;
+            --danger-border: #FCA5A5;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            /* BLOQUEO DE SELECCIÓN DE TEXTO (REQUERIMIENTO 2) */
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            -webkit-touch-callout: none;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: var(--bg-light);
+            color: var(--text-main);
+            line-height: 1.5;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* EFECTO DE BLUR / MITIGACIÓN CAPTURAS (REQUERIMIENTO 4) */
+        .security-blur {
+            filter: blur(16px) grayscale(80%) !important;
+            opacity: 0.25 !important;
+            transition: filter 0.2s ease, opacity 0.2s ease;
+            pointer-events: none !important;
+        }
+
+        /* WATERMARK / PROTECCIÓN VISUAL */
+        .protected-wrapper {
+            position: relative;
+            transition: filter 0.2s ease, opacity 0.2s ease;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .protected-wrapper::before {
+            content: "DOCUMENTO CONFIDENCIAL - USO INTERNO NOTARÍA SARMIENTO MORENO";
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(-30deg);
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: rgba(27, 42, 65, 0.04);
+            white-space: nowrap;
+            pointer-events: none;
+            z-index: 9999;
+        }
+
+        /* HEADER */
+        header {
+            background-color: var(--navy-primary);
+            color: #FFFFFF;
+            padding: 1.5rem 1rem;
+            text-align: center;
+            border-bottom: 3px solid var(--gold-accent);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-container {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .brand-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            color: var(--gold-accent);
+            text-transform: uppercase;
+        }
+
+        .brand-subtitle {
+            font-size: 1rem;
+            font-weight: 400;
+            margin-top: 0.25rem;
+            color: #E2E8F0;
+        }
+
+        .badge-confidential {
+            display: inline-block;
+            margin-top: 0.5rem;
+            background-color: rgba(197, 168, 128, 0.2);
+            border: 1px solid var(--gold-accent);
+            color: var(--gold-accent);
+            padding: 0.2rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        /* MAIN CONTAINER */
+        main {
+            max-width: 1100px;
+            width: 100%;
+            margin: 1.5rem auto;
+            padding: 0 1rem;
+            flex: 1;
+        }
+
+        /* ALERTA DE SEGURIDAD */
+        .security-banner {
+            background-color: var(--danger-bg);
+            border: 1px solid var(--danger-border);
+            color: var(--danger-text);
+            padding: 0.85rem 1.25rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            font-size: 0.875rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .security-banner svg {
+            width: 20px;
+            height: 20px;
+            flex-shrink: 0;
+            fill: currentColor;
+        }
+
+        /* CONTROLES / FILTROS */
+        .controls-card {
+            background: var(--card-bg);
+            padding: 1rem 1.25rem;
+            border-radius: 10px;
+            border: 1px solid var(--border-color);
+            margin-bottom: 1.5rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .search-box {
+            position: relative;
+            flex: 1;
+            min-width: 260px;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 0.65rem 1rem 0.65rem 2.5rem;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-size: 0.9rem;
+            outline: none;
+            transition: border-color 0.2s ease;
+        }
+
+        .search-box input:focus {
+            border-color: var(--navy-primary);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 0.8rem;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 16px;
+            height: 16px;
+            fill: var(--text-muted);
+        }
+
+        .category-buttons {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .btn-tab {
+            background: #F1F5F9;
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            padding: 0.5rem 0.85rem;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-tab:hover, .btn-tab.active {
+            background: var(--navy-primary);
+            color: #FFFFFF;
+            border-color: var(--navy-primary);
+        }
+
+        /* TABLAS DE PRECIOS */
+        .section-block {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            margin-bottom: 2rem;
+            overflow: hidden;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+        }
+
+        .section-header {
+            background-color: var(--navy-primary);
+            color: #FFFFFF;
+            padding: 0.85rem 1.25rem;
+            font-size: 1.05rem;
+            font-weight: 700;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .section-header .tag {
+            background-color: var(--gold-accent);
+            color: var(--navy-dark);
+            font-size: 0.75rem;
+            padding: 0.2rem 0.6rem;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+
+        .table-responsive {
+            width: 100%;
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            font-size: 0.9rem;
+        }
+
+        th {
+            background-color: #F8FAFC;
+            color: var(--navy-primary);
+            font-weight: 700;
+            padding: 0.75rem 1.25rem;
+            border-bottom: 2px solid var(--border-color);
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            letter-spacing: 0.5px;
+        }
+
+        td {
+            padding: 0.85rem 1.25rem;
+            border-bottom: 1px solid var(--border-color);
+            color: var(--text-main);
+        }
+
+        tr:nth-child(even) td {
+            background-color: #FAFAFA;
+        }
+
+        tr:hover td {
+            background-color: #F1F5F9;
+        }
+
+        .price-tag {
+            font-weight: 700;
+            color: var(--navy-primary);
+            white-space: nowrap;
+        }
+
+        .note-text {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            font-style: italic;
+        }
+
+        /* OVERLAY ALERTA CUANDO SE PIERDE EL FOCO */
+        #focus-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(15, 23, 42, 0.85);
+            backdrop-filter: blur(12px);
+            z-index: 10000;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: #FFFFFF;
+            padding: 2rem;
+        }
+
+        #focus-overlay.active {
+            display: flex;
+        }
+
+        .overlay-box {
+            background: var(--navy-primary);
+            border: 2px solid var(--gold-accent);
+            border-radius: 12px;
+            padding: 2.5rem 2rem;
+            max-width: 450px;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5);
+        }
+
+        .overlay-box svg {
+            width: 48px;
+            height: 48px;
+            fill: var(--gold-accent);
+            margin-bottom: 1rem;
+        }
+
+        .overlay-box h3 {
+            font-size: 1.25rem;
+            color: var(--gold-accent);
+            margin-bottom: 0.5rem;
+        }
+
+        .overlay-box p {
+            font-size: 0.9rem;
+            color: #CBD5E1;
+        }
+
+        /* FOOTER */
+        footer {
+            background-color: var(--navy-dark);
+            color: #94A3B8;
+            text-align: center;
+            padding: 1.25rem 1rem;
+            font-size: 0.8rem;
+            border-top: 1px solid #1E293B;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- OVERLAY DE BLOQUEO POR PERDIDA DE FOCO (REQUERIMIENTO 4) -->
+    <div id="focus-overlay">
+        <div class="overlay-box">
+            <svg viewBox="0 0 24 24">
+                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
+            </svg>
+            <h3>Contenido Protegido</h3>
+            <p>Haz clic sobre esta ventana para volver a visualizar la lista de aranceles notariales 2026.</p>
+        </div>
+    </div>
+
+    <div class="protected-wrapper" id="main-content">
+        <header>
+            <div class="header-container">
+                <div class="brand-title">Notaría Sarmiento Moreno</div>
+                <div class="brand-subtitle">Aranceles y Lista de Precios 2026 — Valparaíso</div>
+            </div>
+        </header>
+
+        <main>
+            <!-- CONTROLES -->
+            <div class="controls-card">
+                <div class="search-box">
+                    <svg class="search-icon" viewBox="0 0 24 24">
+                        <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+                    </svg>
+                    <input type="text" id="searchInput" placeholder="Buscar trámite o servicio..." onkeyup="filterServices()">
+                </div>
+                <div class="category-buttons">
+                    <button class="btn-tab active" onclick="filterCategory('all', this)">Todos</button>
+                    <button class="btn-tab" onclick="filterCategory('prestaciones', this)">Prestaciones Generales</button>
+                    <button class="btn-tab" onclick="filterCategory('documentos', this)">Documentos Generales</button>
+                    <button class="btn-tab" onclick="filterCategory('escrituras', this)">Escrituras Públicas</button>
+                    <button class="btn-tab" onclick="filterCategory('sociedades', this)">Sociedades</button>
+                </div>
+            </div>
+
+            <!-- SECCIÓN 1: PRESTACIONES GENERALES -->
+            <div class="section-block" data-category="prestaciones">
+                <div class="section-header">
+                    <span>Prestaciones Generales</span>
+                    <span class="tag">Aranceles 2026</span>
+                </div>
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Prestación / Servicio Notarial</th>
+                                <th>Detalle / Formato</th>
+                                <th>Valor (CLP)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>Autorización Firma Documento</td><td class="note-text">Valor Base</td><td class="price-tag">$5.000</td></tr>
+                            <tr><td>Autorización Firma Seguro Choque + Firma Electrónica F.E.A.</td><td class="note-text">Incluye F.E.A.</td><td class="price-tag">$10.000</td></tr>
+                            <tr><td>Autorización Instalar Vivienda / Empalme / Uso Comercial</td><td class="note-text">Trámite Directo</td><td class="price-tag">$7.000</td></tr>
+                            <tr><td>Declaración Expensas con Firma Electrónica F.E.A.</td><td class="note-text">Incluye F.E.A.</td><td class="price-tag">$10.000</td></tr>
+                            <tr><td>Autorización Trabajo Menor de Edad</td><td class="note-text">Formato Estándar</td><td class="price-tag">$7.000</td></tr>
+                            <tr><td>Autorización Salida del País (Uno o ambos padres)</td><td class="note-text">Uno o más hijos</td><td class="price-tag">$15.000</td></tr>
+                            <tr><td>Autorización Firma Contrato de Trabajo Firma Electrónica F.E.A.</td><td class="note-text">Incluye F.E.A.</td><td class="price-tag">$15.000</td></tr>
+                            <tr><td>Anexo Contrato (Empleador-Trabajador) F.E.A.</td><td class="note-text">Incluye F.E.A.</td><td class="price-tag">$10.000</td></tr>
+                            <tr><td>Vigencia Contrato (Empleador)</td><td class="note-text">Certificación laboral</td><td class="price-tag">$8.000</td></tr>
+                            <tr><td>Carta Renuncia Voluntaria</td><td class="note-text">Formato Estándar</td><td class="price-tag">$5.000</td></tr>
+                            <tr><td>Declaración Jurada Simple</td><td class="note-text">Formato Estándar</td><td class="price-tag">$5.000</td></tr>
+                            <tr><td>Firma Adicional en Declaración Jurada</td><td class="note-text">Por firma extra</td><td class="price-tag">$2.000</td></tr>
+                            <tr><td>Declaración Jurada Universidad / Acreditación</td><td class="note-text">Uso Académico</td><td class="price-tag">$5.000</td></tr>
+                            <tr><td>Declaración Licencia Médica (Ambos Padres)</td><td class="note-text">2 Firmantes</td><td class="price-tag">$7.000</td></tr>
+                            <tr><td>Declaración Licencia Médica (1 Padre)</td><td class="note-text">1 Firmante</td><td class="price-tag">$5.000</td></tr>
+                            <tr><td>Declaración Soltería</td><td class="note-text">Con testigos</td><td class="price-tag">$5.000</td></tr>
+                            <tr><td>Declaración Complejo Firma Electrónica F.E.A.</td><td class="note-text">Incluye F.E.A.</td><td class="price-tag">$10.000</td></tr>
+                            <tr><td>Declaración Divorcio (Redactada por partes)</td><td class="note-text">Con 1 testigo</td><td class="price-tag">$7.000</td></tr>
+                            <tr><td>Declaración Divorcio (Redactada en Notaría)</td><td class="note-text">Con 1 testigo</td><td class="price-tag">$7.000</td></tr>
+                            <tr><td>Carta Poder: SII / Registro Civil (Redactada)</td><td class="note-text">Trámites Generales</td><td class="price-tag">$7.000</td></tr>
+                            <tr><td>Carta Poder: SII / Registro Civil (Redactada en Notaría)</td><td class="note-text">Confección Notarial</td><td class="price-tag">$10.000</td></tr>
+                            <tr><td>Carta Administración Propiedad (Redactada)</td><td class="note-text">Uso Inmobiliario</td><td class="price-tag">$10.000</td></tr>
+                            <tr><td>Carta Administración Propiedad (Redactada en Notaría)</td><td class="note-text">Confección Notarial</td><td class="price-tag">$13.000</td></tr>
+                            <tr><td>Carta Poder Bancario (Redactada)</td><td class="note-text">Trámites Bancarios</td><td class="price-tag">$10.000</td></tr>
+                            <tr><td>Carta Poder Bancario (Redactada en Notaría)</td><td class="note-text">Confección Notarial</td><td class="price-tag">$13.000</td></tr>
+                            <tr><td>Mandato de Pensión</td><td class="note-text">Cobro de Pensión</td><td class="price-tag">$8.000</td></tr>
+                            <tr><td>Carta Poder Venta Vehículo</td><td class="note-text">Poder para Venta</td><td class="price-tag">$20.000</td></tr>
+                            <tr><td>Firma Adicional en Carta Poder</td><td class="note-text">Por persona adicional</td><td class="price-tag">$2.000</td></tr>
+                            <tr><td>Cesión de Derechos Bienes Nacionales</td><td class="note-text">Trámite Especial</td><td class="price-tag">$20.000</td></tr>
+                            <tr><td>Carta de Invitación + Firma Electrónica F.E.A.</td><td class="note-text">Extranjería / Visas</td><td class="price-tag">$10.000</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- SECCIÓN 2: DOCUMENTOS GENERALES Y VEHÍCULOS -->
+            <div class="section-block" data-category="documentos">
+                <div class="section-header">
+                    <span>Documentos Generales, Arrendamientos y Vehículos</span>
+                    <span class="tag">Aranceles 2026</span>
+                </div>
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Documento / Contrato</th>
+                                <th>Condición / Redacción</th>
+                                <th>Valor (CLP)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>Certificación Fotografía</td><td class="note-text">Por unidad</td><td class="price-tag">$6.000 c/u</td></tr>
+                            <tr><td>Cesión Derecho Cupo / Anticuarios</td><td class="note-text">Trámite Privado</td><td class="price-tag">$20.000</td></tr>
+                            <tr><td>Cesión Derecho Patente Comercial</td><td class="note-text">Desde</td><td class="price-tag">$15.000</td></tr>
+                            <tr><td>Comodato (Redactado en Notaría)</td><td class="note-text">Confección Completa</td><td class="price-tag">$20.000</td></tr>
+                            <tr><td>Comodato Privado (Partes) Redactado Notaría</td><td class="note-text">Revisión y Firma</td><td class="price-tag">$20.000</td></tr>
+                            <tr><td>Finiquito de Trabajo (2 Ejemplares)</td><td class="note-text">Formato Estándar</td><td class="price-tag">$5.000</td></tr>
+                            <tr><td>Finiquito de Trabajo (3 Ejemplares)</td><td class="note-text">Formato Estándar</td><td class="price-tag">$6.000</td></tr>
+                            <tr><td>Fotocopia Legalizada (Un Lado / Cédula Identidad)</td><td class="note-text">Por carilla / documento</td><td class="price-tag">$2.000</td></tr>
+                            <tr><td>Mutuo de Dinero</td><td class="note-text">Desde</td><td class="price-tag">$20.000</td></tr>
+                            <tr><td>Reconocimiento de Deuda</td><td class="note-text">Desde</td><td class="price-tag">$15.000</td></tr>
+                            <tr><td>Transacción Privada</td><td class="note-text">Desde</td><td class="price-tag">$20.000</td></tr>
+                            <tr><td>Autorización Letras y Pagarés (Solo Autorización Firma)</td><td class="note-text">Documento Confeccionado</td><td class="price-tag">$5.000</td></tr>
+                            <tr><td>Autorización Letras y Pagarés (Confeccionado en Notaría)</td><td class="note-text">Redacción Notarial</td><td class="price-tag">$7.000</td></tr>
+                            <tr><td>Compraventa de Especies y/o Negocio</td><td class="note-text">Desde</td><td class="price-tag">$20.000</td></tr>
+                            <tr><td>Compraventa de Vehículos Usados</td><td class="note-text">Desde</td><td class="price-tag">$40.000</td></tr>
+                            <tr><td>Promesa Compraventa de Vehículo</td><td class="note-text">Desde</td><td class="price-tag">$20.000</td></tr>
+                            <tr><td>Contrato Arrendamiento (Redactado en Notaría - 1 o 2 firmas)</td><td class="note-text">F.E.A. Digitalizada incluida</td><td class="price-tag">$20.000</td></tr>
+                            <tr><td>Contrato Arrendamiento (No Redactado - 1 o 2 firmas)</td><td class="note-text">Solo Autorización Firmas</td><td class="price-tag">$15.000</td></tr>
+                            <tr><td>Firma Anexa en Contrato Arrendamiento</td><td class="note-text">Por firma adicional</td><td class="price-tag">$2.000</td></tr>
+                            <tr><td>Carta Término Contrato (Redactada en Notaría)</td><td class="note-text">Confección Notarial</td><td class="price-tag">$10.000</td></tr>
+                            <tr><td>Carta Término Contrato (No Redactada)</td><td class="note-text">Solo Autorización Firma</td><td class="price-tag">$5.000</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- SECCIÓN 3: ESCRITURAS PÚBLICAS -->
+            <div class="section-block" data-category="escrituras">
+                <div class="section-header">
+                    <span>Escrituras Públicas y Promesas</span>
+                    <span class="tag">Aranceles 2026</span>
+                </div>
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Tipo de Escritura Pública</th>
+                                <th>Derechos Notariales</th>
+                                <th>Redacción / Adicionales</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>Compraventa Propiedad (Desde)</td><td class="price-tag">$80.000 <span class="note-text">(+ Milaje)</span></td><td class="note-text">Redacción: $60.000 / Firma extra: $4.000</td></tr>
+                            <tr><td>Promesa de Compraventa (Desde)</td><td class="price-tag">$50.000</td><td class="note-text">Redacción: $60.000 / Firma extra: $4.000</td></tr>
+                            <tr><td>Adjudicación</td><td class="price-tag">Valor CVTA + 25%</td><td class="note-text">Según tasación/monto</td></tr>
+                            <tr><td>Autorización Conyugal para Vender</td><td class="price-tag">$50.000</td><td class="note-text">Escritura Pública</td></tr>
+                            <tr><td>Autorización Salir del País (Escritura Pública)</td><td class="price-tag">$40.000 (1 firma) / $35.000 (2 firmas)</td><td class="note-text">Vía Escritura Pública</td></tr>
+                            <tr><td>Acta Compromiso</td><td class="price-tag">$35.000</td><td class="note-text">Escritura Pública</td></tr>
+                            <tr><td>Cancelación / Cancelación y Alzamiento</td><td class="price-tag">$45.000 a $85.000</td><td class="note-text">Según monto del alzamiento</td></tr>
+                            <tr><td>Cesión Derechos Bienes (Hasta $3M)</td><td class="price-tag">$30.000</td><td class="note-text">Hasta $3.000.000</td></tr>
+                            <tr><td>Cesión Derechos Bienes (Hasta $6M)</td><td class="price-tag">$50.000</td><td class="note-text">Hasta $6.000.000</td></tr>
+                            <tr><td>Cesión Derechos Bienes (Hasta $10M)</td><td class="price-tag">$60.000</td><td class="note-text">De $7M a $10.000.000</td></tr>
+                            <tr><td>Cese de Convivencia</td><td class="price-tag">$45.000</td><td class="note-text">Registro Civil / Notarial</td></tr>
+                            <tr><td>Delegación de Mandato Especial</td><td class="price-tag">$35.000</td><td class="note-text">Escritura Pública</td></tr>
+                            <tr><td>Delegación de Mandato General</td><td class="price-tag">$40.000</td><td class="note-text">Escritura Pública</td></tr>
+                            <tr><td>Liquidación Sociedad Conyugal</td><td class="price-tag">Valor CVTA + 10%</td><td class="note-text">Base 1 inmueble: $200.000</td></tr>
+                            <tr><td>Compraventa Cementerio / Sepultura</td><td class="price-tag">$65.000</td><td class="note-text">Escritura Pública</td></tr>
+                            <tr><td>Mandato Judicial</td><td class="price-tag">$35.000</td><td class="note-text">Para Abogados</td></tr>
+                            <tr><td>Mandato Especial</td><td class="price-tag">$45.000</td><td class="note-text">Escritura Pública</td></tr>
+                            <tr><td>Mandato General</td><td class="price-tag">$50.000</td><td class="note-text">Amplias facultades</td></tr>
+                            <tr><td>Mandato General Bancario</td><td class="price-tag">$40.000</td><td class="note-text">Para instituciones financieras</td></tr>
+                            <tr><td>Permiso de Obra Nueva</td><td class="price-tag">$50.000</td><td class="note-text">DOM / Municipalidad</td></tr>
+                            <tr><td>Prohibición SERVIU</td><td class="price-tag">$40.000</td><td class="note-text">Trámite Habitacional</td></tr>
+                            <tr><td>Protocolización de Documento</td><td class="price-tag">$30.000</td><td class="note-text">Ingreso a Registro Notarial</td></tr>
+                            <tr><td>Reconocimiento de Hijo Natural</td><td class="price-tag">$30.000</td><td class="note-text">Escritura Pública</td></tr>
+                            <tr><td>Reducción a Escritura Pública</td><td class="price-tag">$30.000</td><td class="note-text">Actas o Asambleas</td></tr>
+                            <tr><td>Renuncia de Gananciales</td><td class="price-tag">$45.000</td><td class="note-text">Escritura Pública</td></tr>
+                            <tr><td>Revocación de Mandato</td><td class="price-tag">$20.000</td><td class="note-text">Escritura Pública</td></tr>
+                            <tr><td>Separación Total de Bienes</td><td class="price-tag">$35.000</td><td class="note-text">Capitulaciones Matrimoniales</td></tr>
+                            <tr><td>Servidumbre</td><td class="price-tag">$80.000</td><td class="note-text">2 firmas (+ $4.000 por firma extra)</td></tr>
+                            <tr><td>Cuidado Personal de Menores</td><td class="price-tag">$25.000</td><td class="note-text">Escritura Pública</td></tr>
+                            <tr><td>Testamento Abierto (Cónyuges)</td><td class="price-tag">$100.000</td><td class="note-text">Sujeto a complejidad</td></tr>
+                            <tr><td>Testamento Cerrado</td><td class="price-tag">$80.000</td><td class="note-text">Custodia en Notaría</td></tr>
+                            <tr><td>Vigencia de Escritura Pública</td><td class="price-tag">$20.000</td><td class="note-text">Certificación Notarial</td></tr>
+                            <tr><td>Formulario 2890 (SII)</td><td class="price-tag">$10.000</td><td class="note-text">Declaración Inmobiliaria</td></tr>
+                            <tr><td>Escritura Rectificatoria / Aclaratoria</td><td class="price-tag">$20.000</td><td class="note-text">Evaluación caso a caso</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- SECCIÓN 4: SOCIEDADES -->
+            <div class="section-block" data-category="sociedades">
+                <div class="section-header">
+                    <span>Constitución y Modificación de Sociedades</span>
+                    <span class="tag">Aranceles 2026</span>
+                </div>
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Tramo del Capital Social</th>
+                                <th>Arancel Notarial</th>
+                                <th>Observaciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>Capital Hasta $3.000.000</td><td class="price-tag">$100.000</td><td class="note-text">Valores sujeto a complejidad</td></tr>
+                            <tr><td>Capital De $3.000.000 a $6.000.000</td><td class="price-tag">$120.000</td><td class="note-text">Valores sujeto a complejidad</td></tr>
+                            <tr><td>Capital De $6.000.000 a $7.500.000</td><td class="price-tag">$140.000</td><td class="note-text">Valores sujeto a complejidad</td></tr>
+                            <tr><td>Capital De $7.500.000 a $10.000.000</td><td class="price-tag">$160.000</td><td class="note-text">Valores sujeto a complejidad</td></tr>
+                            <tr><td>Capital De $10.000.000 a $20.000.000</td><td class="price-tag">$200.000</td><td class="note-text">Valores sujeto a complejidad</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </main>
+
+        <footer>
+            Notaría Sarmiento Moreno — Prat 856 / Chacabuco 1845, Valparaíso | Documento Protegido © 2026
+        </footer>
+    </div>
+
+    <!-- BLOQUEO DE EVENTOS JAVASCRIPT (REQUERIMIENTO 3 Y 4) -->
+    <script>
+        (function() {
+            'use strict';
+
+            const mainContent = document.getElementById('main-content');
+            const focusOverlay = document.getElementById('focus-overlay');
+
+            // 1. BLOQUEAR MENÚ CONTEXTUAL (CLIC DERECHO)
+            document.addEventListener('contextmenu', function(e) {
+                e.preventDefault();
+                return false;
+            });
+
+            // 2. BLOQUEAR ATAJOS DE TECLADO
+            document.addEventListener('keydown', function(e) {
+                // Impresión: Ctrl+P / Cmd+P
+                if ((e.ctrlKey || e.metaKey) && (e.key === 'p' || e.key === 'P')) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    return false;
+                }
+
+                // Guardar página: Ctrl+S / Cmd+S
+                if ((e.ctrlKey || e.metaKey) && (e.key === 's' || e.key === 'S')) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    return false;
+                }
+
+                // Ver Código Fuente: Ctrl+U / Cmd+U
+                if ((e.ctrlKey || e.metaKey) && (e.key === 'u' || e.key === 'U')) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    return false;
+                }
+
+                // Tecla F12 (Herramientas desarrollador)
+                if (e.key === 'F12' || e.keyCode === 123) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    return false;
+                }
+
+                // Herramientas de Inspección: Ctrl+Shift+I / Cmd+Opt+I / Ctrl+Shift+J / Ctrl+Shift+C
+                if ((e.ctrlKey || e.metaKey) && e.shiftKey && (e.key === 'I' || e.key === 'i' || e.key === 'J' || e.key === 'j' || e.key === 'C' || e.key === 'c')) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    return false;
+                }
+
+                // Captura de Pantalla: Tecla PrintScreen / ImprPant
+                if (e.key === 'PrintScreen' || e.keyCode === 44) {
+                    e.preventDefault();
+                    applyBlur();
+                    // Intentar limpiar portapapeles si la API está disponible
+                    if (navigator.clipboard && navigator.clipboard.writeText) {
+                        navigator.clipboard.writeText('');
+                    }
+                    return false;
+                }
+            });
+
+            // 3. EFECTO DE BLUR AL PERDER EL FOCO (CAMBIO DE PESTAÑA, HERRAMIENTA RECRTES)
+            function applyBlur() {
+                mainContent.classList.add('security-blur');
+                focusOverlay.classList.add('active');
+            }
+
+            function removeBlur() {
+                mainContent.classList.remove('security-blur');
+                focusOverlay.classList.remove('active');
+            }
+
+            window.addEventListener('blur', function() {
+                applyBlur();
+            });
+
+            window.addEventListener('focus', function() {
+                removeBlur();
+            });
+
+            document.addEventListener('mouseleave', function(e) {
+                if (e.clientY <= 0 || e.clientX <= 0 || e.clientX >= window.innerWidth || e.clientY >= window.innerHeight) {
+                    applyBlur();
+                }
+            });
+
+            document.addEventListener('mouseenter', function() {
+                removeBlur();
+            });
+
+            document.addEventListener('visibilitychange', function() {
+                if (document.hidden) {
+                    applyBlur();
+                } else {
+                    removeBlur();
+                }
+            });
+
+            // Hacer clic en el overlay para desbloquear foco
+            focusOverlay.addEventListener('click', function() {
+                removeBlur();
+                window.focus();
+            });
+
+            // 4. FUNCIONES DE FILTRO Y BÚSQUEDA DE SERVICIOS
+            window.filterServices = function() {
+                const query = document.getElementById('searchInput').value.toLowerCase();
+                const rows = document.querySelectorAll('tbody tr');
+
+                rows.forEach(row => {
+                    const text = row.textContent.toLowerCase();
+                    if (text.includes(query)) {
+                        row.style.display = '';
+                    } else {
+                        row.style.display = 'none';
+                    }
+                });
+            };
+
+            window.filterCategory = function(cat, btn) {
+                document.querySelectorAll('.btn-tab').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+
+                const sections = document.querySelectorAll('.section-block');
+                sections.forEach(sec => {
+                    if (cat === 'all' || sec.getAttribute('data-category') === cat) {
+                        sec.style.display = '';
+                    } else {
+                        sec.style.display = 'none';
+                    }
+                });
+            };
+
+        })();
+    </script>
+</body>
+</html>

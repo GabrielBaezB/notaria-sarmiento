@@ -4,7 +4,7 @@ import Link from 'next/link';
 import dynamic from 'next/dynamic';
 
 // Dynamic import con SSR desactivado para componentes que dependen del window
-const Ubicacion = dynamic(() => import('./Ubicacion'), { 
+const Ubicacion = dynamic(() => import('./Ubicacion'), {
   ssr: false,
   loading: () => (
     <div className="bg-gray-100 py-16">
@@ -51,7 +51,7 @@ export default function UbicacionClient() {
             Ubicación privilegiada en Valparaíso
           </h2>
           <p className="mb-4">
-            Nuestra notaría se encuentra en una ubicación estratégica en el centro de Valparaíso, 
+            Nuestra notaría se encuentra en una ubicación estratégica en el centro de Valparaíso,
             facilitando el acceso desde cualquier punto de la ciudad y regiones aledañas.
           </p>
         </section>
@@ -63,7 +63,7 @@ export default function UbicacionClient() {
           <div className="bg-gray-50 p-6 rounded-lg">
             <p className="text-lg mb-2">
               <span className="text-notaria-dorado mr-3">📍</span>
-                              <strong>Chacabuco 2845, Valparaíso</strong>
+              <strong>Chacabuco 2845, Valparaíso</strong>
             </p>
             <p className="text-lg mb-2">
               <span className="text-notaria-dorado mr-3">🏢</span>
@@ -137,7 +137,7 @@ export default function UbicacionClient() {
           <h2 className="text-3xl font-bold mb-8 text-center text-notaria-azul">
             Opciones de transporte
           </h2>
-          
+
           <div className="grid md:grid-cols-3 gap-6">
             <div className="text-center p-6 border rounded-lg">
               <h3 className="text-xl font-bold mb-4 text-notaria-azul">
@@ -146,7 +146,7 @@ export default function UbicacionClient() {
               <p className="mb-4">
                 Múltiples líneas de microbuses y buses urbanos pasan por nuestra ubicación.
               </p>
-              <Link 
+              <Link
                 href="https://www.google.com/maps/dir//Chacabuco+2843,+Valpara%C3%ADso,+Valpara%C3%ADso,+Chile"
                 target="_blank"
                 rel="noopener noreferrer"
@@ -163,7 +163,7 @@ export default function UbicacionClient() {
               <p className="mb-4">
                 Estacionamiento disponible en las cercanías y calles aledañas.
               </p>
-              <Link 
+              <Link
                 href="https://www.google.com/maps/dir//Chacabuco+2843,+Valpara%C3%ADso,+Valpara%C3%ADso,+Chile"
                 target="_blank"
                 rel="noopener noreferrer"
@@ -180,7 +180,7 @@ export default function UbicacionClient() {
               <p className="mb-4">
                 Ubicación céntrica accesible desde mercado cardonal valparaíso y alrededores.
               </p>
-              <Link 
+              <Link
                 href="https://www.google.com/maps/dir//Chacabuco+2843,+Valpara%C3%ADso,+Valpara%C3%ADso,+Chile"
                 target="_blank"
                 rel="noopener noreferrer"
@@ -196,15 +196,14 @@ export default function UbicacionClient() {
           <h2 className="text-3xl font-bold mb-8 text-center text-notaria-azul">
             Información adicional
           </h2>
-          
+
           <div className="grid md:grid-cols-2 gap-8">
             <div>
               <h3 className="text-lg font-bold mb-2 text-notaria-azul">Horarios</h3>
-              <p className="mb-2">Lunes a Jueves: 09:00 - 14:00 | 15:00 - 17:30</p>
-              <p className="mb-2">Viernes: 09:00 - 14:00 | 15:00 - 16:30</p>
+              <p className="mb-2">Lunes a Viernes: 09:00 - 16:30 (horario continuo)</p>
               <p className="mb-2">Sábados: Cerrado</p>
               <p className="mb-4">Domingos: Cerrado</p>
-              
+
               <h3 className="text-lg font-bold mb-2 text-notaria-azul">Teléfonos</h3>
               <div className="space-y-1">
 
@@ -235,14 +234,14 @@ export default function UbicacionClient() {
             Llámanos y te orientamos sobre la mejor ruta para llegar a nuestra notaría
           </p>
           <div className="flex flex-col sm:flex-row justify-center gap-4">
-            <a 
-              href="tel:+56512595840" 
+            <a
+              href="tel:+56512595840"
               className="bg-notaria-dorado text-notaria-azul font-bold py-3 px-6 rounded-lg hover:bg-yellow-400 transition"
             >
               📞 +56 51 2595840
             </a>
-            <a 
-              href="tel:+56322548174" 
+            <a
+              href="tel:+56322548174"
               className="bg-notaria-dorado text-notaria-azul font-bold py-3 px-6 rounded-lg hover:bg-yellow-400 transition"
             >
               📞 +56 32 2548174

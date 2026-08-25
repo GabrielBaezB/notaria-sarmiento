@@ -58,14 +58,14 @@ export default function ContactoClient() {
                       Ubicación
                     </h3>
                   </div>
-                  
+
                   <div className="space-y-5">
                     <div>
                       <p className="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-1">Dirección Oficial</p>
                       <p className="text-lg text-gray-800 font-medium">Chacabuco 2845</p>
                       <p className="text-gray-600">Valparaíso, Chile</p>
                     </div>
-                    
+
                     <div className="pt-4 border-t border-gray-200">
                       <p className="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-1">Referencia</p>
                       <p className="text-gray-700 flex items-center gap-2">
@@ -84,7 +84,7 @@ export default function ContactoClient() {
                       Teléfonos
                     </h3>
                   </div>
-                  
+
                   <div className="space-y-6">
                     {/* Teléfono 1 */}
                     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 bg-white rounded-lg border border-gray-100 shadow-sm">
@@ -92,7 +92,7 @@ export default function ContactoClient() {
                         <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">Línea Principal</p>
                         <p className="text-lg font-bold text-notaria-azul">+56 32 2548174</p>
                       </div>
-                      <a 
+                      <a
                         href="tel:+56322548174"
                         className="inline-flex items-center justify-center gap-2 bg-notaria-dorado/20 hover:bg-notaria-dorado text-notaria-azul px-4 py-2 rounded-md font-semibold transition-all duration-200 w-full sm:w-auto text-sm"
                       >
@@ -107,7 +107,7 @@ export default function ContactoClient() {
                         <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">Línea Secundaria</p>
                         <p className="text-lg font-bold text-notaria-azul">+56 51 2595840</p>
                       </div>
-                      <a 
+                      <a
                         href="tel:+56512595840"
                         className="inline-flex items-center justify-center gap-2 bg-notaria-dorado/20 hover:bg-notaria-dorado text-notaria-azul px-4 py-2 rounded-md font-semibold transition-all duration-200 w-full sm:w-auto text-sm"
                       >
@@ -131,12 +131,8 @@ export default function ContactoClient() {
             <div className="bg-white rounded-lg shadow-lg p-8 border border-gray-200">
               <div className="space-y-4">
                 <div className="flex justify-between items-center py-3 border-b border-gray-100">
-                  <span className="font-semibold text-notaria-azul">Lunes - Jueves</span>
-                  <span className="text-gray-600">09:00 - 14:00 | 15:00 - 17:30</span>
-                </div>
-                <div className="flex justify-between items-center py-3 border-b border-gray-100">
-                  <span className="font-semibold text-notaria-azul">Viernes</span>
-                  <span className="text-gray-600">09:00 - 14:00 | 15:00 - 16:30</span>
+                  <span className="font-semibold text-notaria-azul">Lunes - Viernes</span>
+                  <span className="text-gray-600">09:00 - 16:30 (horario continuo)</span>
                 </div>
                 <div className="flex justify-between items-center py-3">
                   <span className="font-semibold text-notaria-azul">Sábados</span>
@@ -147,10 +143,10 @@ export default function ContactoClient() {
                   <span className="text-red-600">Cerrado</span>
                 </div>
               </div>
-              
+
               <div className="mt-6 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
                 <p className="text-sm text-gray-700">
-                  <strong>Nota:</strong> Para trámites complejos como escrituras públicas, 
+                  <strong>Nota:</strong> Para trámites complejos como escrituras públicas,
                   recomendamos agendar una cita previa llamando al +56 32 2548174 o +56 51 2595840.
                 </p>
               </div>
@@ -170,35 +166,35 @@ export default function ContactoClient() {
               <p className="text-gray-600 text-sm mb-4">
                 Resolvemos todas tus dudas sobre trámites notariales
               </p>
-              <a 
+              <a
                 href="tel:+56322548174"
                 className="text-notaria-dorado font-medium hover:underline"
               >
                 Llamar para consultar
               </a>
             </div>
-            
+
             <div className="bg-white rounded-lg shadow-lg p-6 text-center border border-gray-200">
               <div className="text-4xl mb-4">📅</div>
               <h3 className="text-lg font-bold mb-2 text-notaria-azul">Citas</h3>
               <p className="text-gray-600 text-sm mb-4">
                 Agenda una cita para trámites complejos
               </p>
-              <a 
+              <a
                 href="tel:+56322548174"
                 className="text-notaria-dorado font-medium hover:underline"
               >
                 Agendar cita
               </a>
             </div>
-            
+
             <div className="bg-white rounded-lg shadow-lg p-6 text-center border border-gray-200">
               <div className="text-4xl mb-4">📄</div>
               <h3 className="text-lg font-bold mb-2 text-notaria-azul">Documentos</h3>
               <p className="text-gray-600 text-sm mb-4">
                 Consulta qué documentos necesitas
               </p>
-              <a 
+              <a
                 href="/servicios/"
                 className="text-notaria-dorado font-medium hover:underline"
               >
@@ -225,7 +221,7 @@ export default function ContactoClient() {
                 <li>• Consulta nuestros horarios</li>
               </ul>
             </div>
-            
+
             <div className="bg-green-50 border border-green-200 rounded-lg p-6">
               <h3 className="text-xl font-bold mb-4 text-notaria-azul">
                 🚗 Cómo Llegar
@@ -249,14 +245,14 @@ export default function ContactoClient() {
             Llámanos ahora mismo y te atenderemos con gusto
           </p>
           <div className="flex flex-col sm:flex-row justify-center gap-4">
-            <a 
-              href="tel:+56512595840" 
+            <a
+              href="tel:+56512595840"
               className="bg-notaria-dorado text-notaria-azul font-bold py-3 px-6 rounded-lg hover:bg-yellow-400 transition"
             >
               📞 +56 51 2595840
             </a>
-            <a 
-              href="tel:+56322548174" 
+            <a
+              href="tel:+56322548174"
               className="bg-notaria-dorado text-notaria-azul font-bold py-3 px-6 rounded-lg hover:bg-yellow-400 transition"
             >
               📞 +56 32 2548174

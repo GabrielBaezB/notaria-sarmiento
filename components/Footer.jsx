@@ -1,3 +1,5 @@
+import Link from 'next/link';
+
 export default function Footer() {
   return (
     <footer className="bg-notaria-azul text-notaria-blanco py-12">
@@ -11,15 +13,18 @@ export default function Footer() {
               <p>📞 +56 32 2548174</p>
               <p>📞 +56 51 2595840</p>
               <p>✉️ contacto@notariasarmiento.cl</p>
-              <a href="/equipo" className="block text-gray-400 hover:text-notaria-dorado transition-colors pt-1">
+              <Link href="/equipo" className="block text-gray-400 hover:text-notaria-dorado transition-colors pt-1">
                 Nómina de suplentes - Trabajadores remuneracion
-              </a>
+              </Link>
               <a href="https://www.infoprobidad.cl/Declaracion/Declaracion?ID=5116288" target="_blank" rel="noopener noreferrer" className="block text-gray-400 hover:text-notaria-dorado transition-colors pt-1">
                 Declaración de Intereses y Patrimonio
               </a>
-              <a href="/balances-anuales" className="block text-gray-400 hover:text-notaria-dorado transition-colors pt-1">
+              <Link href="/balances-anuales" className="block text-gray-400 hover:text-notaria-dorado transition-colors pt-1">
                 Balances Anuales
-              </a>
+              </Link>
+              <Link href="/precios-protegidos" className="block text-gray-400 hover:text-notaria-dorado transition-colors pt-1">
+                Aranceles y Precios 2026
+              </Link>
             </div>
           </div>
 
@@ -27,8 +32,7 @@ export default function Footer() {
           <div>
             <h3 className="text-xl font-bold mb-4">Horarios</h3>
             <div className="space-y-2 text-sm">
-              <p>🕘 Lunes - Jueves: 9:00 - 14:00 | 15:00 - 17:30</p>
-              <p>🕘 Viernes: 9:00 - 14:00 | 15:00 - 16:30</p>
+              <p>🕘 Lunes - Viernes: 9:00 - 16:30 (horario continuo)</p>
               <p>🕘 Sábado: Cerrado</p>
               <p>🚫 Domingo: Cerrado</p>
             </div>
@@ -38,15 +42,15 @@ export default function Footer() {
           <div>
             <h3 className="text-xl font-bold mb-4">Servicios</h3>
             <div className="space-y-2 text-sm">
-              <a href="/servicios/poder-simple" className="block hover:text-notaria-dorado transition-colors">
+              <Link href="/servicios/poder-simple" className="block hover:text-notaria-dorado transition-colors">
                 Poder Simple
-              </a>
-              <a href="/servicios/autorizacion-menores" className="block hover:text-notaria-dorado transition-colors">
+              </Link>
+              <Link href="/servicios/autorizacion-menores" className="block hover:text-notaria-dorado transition-colors">
                 Autorización Menores
-              </a>
-              <a href="/servicios/venta-inmueble" className="block hover:text-notaria-dorado transition-colors">
+              </Link>
+              <Link href="/servicios/venta-inmueble" className="block hover:text-notaria-dorado transition-colors">
                 Venta de Inmueble
-              </a>
+              </Link>
             </div>
           </div>
         </div>
@@ -58,15 +62,15 @@ export default function Footer() {
               <p>© 2026 Notaría Sarmiento Moreno - Valparaíso</p>
               <p className="text-gray-400">Todos los derechos reservados</p>
             </div>
-            
+
             {/* Enlaces legales */}
             <div className="flex space-x-6 mt-4 md:mt-0 text-sm">
-              <a href="/privacidad" className="hover:text-notaria-dorado transition-colors">
+              <Link href="/privacidad" className="hover:text-notaria-dorado transition-colors">
                 Política de Privacidad
-              </a>
-              <a href="/terminos" className="hover:text-notaria-dorado transition-colors">
+              </Link>
+              <Link href="/terminos" className="hover:text-notaria-dorado transition-colors">
                 Términos de Uso
-              </a>
+              </Link>
               <a href="/sitemap.xml" className="hover:text-notaria-dorado transition-colors">
                 Sitemap
               </a>

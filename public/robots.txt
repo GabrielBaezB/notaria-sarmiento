@@ -10,6 +10,9 @@ Disallow: /static/
 Disallow: /.well-known/
 Disallow: /admin/
 Disallow: /private/
+Disallow: /precios/
+Disallow: /precios-protegidos
+Disallow: /precios-protegidos.html
 Allow: /_next/static/css/
 Allow: /_next/static/media/
 Allow: /_next/static/js/

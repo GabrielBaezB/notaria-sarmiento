@@ -46,3 +46,5 @@ next-env.d.ts
 # Archivos de datos en crudo
 nuevos-datos.txt
 nuevos-datos.xlsx
+*.docx
+*.pdf

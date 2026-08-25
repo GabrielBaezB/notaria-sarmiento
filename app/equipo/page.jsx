@@ -50,9 +50,9 @@ export default function EquipoPage() {
               <li>DANIELA GIOVANNA FREDES SAN JUAN.</li>
             </ul>
 
-            <div className="mt-8 p-6 bg-red-50 border border-red-200 rounded-lg text-red-700 font-bold flex flex-col sm:flex-row justify-between items-center text-lg gap-2 shadow-sm">
+            <div className="mt-6 pt-4 border-t border-gray-100 flex justify-between items-center text-sm text-gray-500">
               <span>Total de remuneraciones:</span>
-              <span className="text-2xl font-extrabold text-red-600">$6.850.927 pesos</span>
+              <span className="font-medium text-gray-700">$6.850.927 pesos</span>
             </div>
           </section>
         </div>

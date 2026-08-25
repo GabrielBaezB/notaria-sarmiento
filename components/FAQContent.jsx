@@ -48,11 +48,11 @@ export default function FAQContent() {
     },
     {
       pregunta: "¿Cuáles son los horarios de atención?",
-      respuesta: "Nuestros horarios son: Lunes a Jueves de 09:00 a 14:00 y 15:00 a 17:30, Viernes de 09:00 a 14:00 y 15:00 a 16:30. Sábados y domingos permanecemos cerrados."
+      respuesta: "Nuestros horarios son: Lunes a Viernes de 09:00 a 16:30, en horario continuo. Sábados y domingos permanecemos cerrados."
     },
     {
       pregunta: "¿Dónde están ubicados?",
-                      respuesta: "Estamos ubicados en Chacabuco 2845, Valparaíso, frente al terminal de buses y a pasos del Congreso Nacional."
+      respuesta: "Estamos ubicados en Chacabuco 2845, Valparaíso, frente al terminal de buses y a pasos del Congreso Nacional."
     },
     {
       pregunta: "¿Qué métodos de pago aceptan?",
@@ -74,10 +74,10 @@ export default function FAQContent() {
         <h1 className="text-4xl md:text-5xl font-bold mb-6 text-notaria-azul">
           Preguntas Frecuentes
         </h1>
-        
+
         <section className="mb-8">
           <p className="text-lg mb-4">
-            Encuentra respuestas a las preguntas más comunes sobre nuestros servicios notariales. 
+            Encuentra respuestas a las preguntas más comunes sobre nuestros servicios notariales.
             Si no encuentras la respuesta que buscas, no dudes en contactarnos.
           </p>
         </section>
@@ -119,14 +119,14 @@ export default function FAQContent() {
             Llámanos directamente y te ayudamos con cualquier consulta
           </p>
           <div className="flex flex-col sm:flex-row justify-center gap-4">
-            <a 
-              href="tel:+56512595840" 
+            <a
+              href="tel:+56512595840"
               className="bg-notaria-dorado text-notaria-azul font-bold py-3 px-6 rounded-lg hover:bg-yellow-400 transition"
             >
               📞 Llamar: +56 51 2595840
             </a>
-            <a 
-              href="tel:+56322548174" 
+            <a
+              href="tel:+56322548174"
               className="bg-notaria-dorado text-notaria-azul font-bold py-3 px-6 rounded-lg hover:bg-yellow-400 transition"
             >
               📞 Llamar: +56 32 2548174

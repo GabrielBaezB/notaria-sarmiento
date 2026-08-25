@@ -64,10 +64,8 @@ export default function Ubicacion() {
                 <div>
                   <h3 className="text-lg font-semibold text-notaria-azul mb-2">Horario de Atención</h3>
                   <div className="space-y-1">
-                    <p className="text-gray-700 font-medium">Lunes a Jueves</p>
-                    <p className="text-gray-600">09:00 - 14:00 hrs | 15:00 - 17:30 hrs</p>
-                    <p className="text-gray-700 font-medium mt-2">Viernes</p>
-                    <p className="text-gray-600">09:00 - 14:00 hrs | 15:00 - 16:30 hrs</p>
+                    <p className="text-gray-700 font-medium">Lunes a Viernes</p>
+                    <p className="text-gray-600">09:00 - 16:30 hrs (horario continuo)</p>
                   </div>
                 </div>
               </div>

@@ -15,11 +15,11 @@ export default function HorariosContent() {
   }
 
   const horarios = [
-    { dia: 'Lunes', horario: '09:00 - 14:00 | 15:00 - 17:30', estado: 'Abierto' },
-    { dia: 'Martes', horario: '09:00 - 14:00 | 15:00 - 17:30', estado: 'Abierto' },
-    { dia: 'Miércoles', horario: '09:00 - 14:00 | 15:00 - 17:30', estado: 'Abierto' },
-    { dia: 'Jueves', horario: '09:00 - 14:00 | 15:00 - 17:30', estado: 'Abierto' },
-    { dia: 'Viernes', horario: '09:00 - 14:00 | 15:00 - 16:30', estado: 'Abierto' },
+    { dia: 'Lunes', horario: '09:00 - 16:30', estado: 'Abierto' },
+    { dia: 'Martes', horario: '09:00 - 16:30', estado: 'Abierto' },
+    { dia: 'Miércoles', horario: '09:00 - 16:30', estado: 'Abierto' },
+    { dia: 'Jueves', horario: '09:00 - 16:30', estado: 'Abierto' },
+    { dia: 'Viernes', horario: '09:00 - 16:30', estado: 'Abierto' },
     { dia: 'Sábado', horario: 'Cerrado', estado: 'Cerrado' },
     { dia: 'Domingo', horario: 'Cerrado', estado: 'Cerrado' }
   ];
@@ -101,11 +101,10 @@ export default function HorariosContent() {
                         <span className="font-semibold text-notaria-azul w-24">{item.dia}</span>
                         <span className="text-gray-600">{item.horario}</span>
                       </div>
-                      <span className={`px-3 py-1 rounded-full text-sm font-medium ${
-                        item.estado === 'Abierto' 
-                          ? 'bg-green-100 text-green-800' 
+                      <span className={`px-3 py-1 rounded-full text-sm font-medium ${item.estado === 'Abierto'
+                          ? 'bg-green-100 text-green-800'
                           : 'bg-red-100 text-red-800'
-                      }`}>
+                        }`}>
                         {item.estado}
                       </span>
                     </div>
@@ -136,7 +135,7 @@ export default function HorariosContent() {
               </div>
               <div className="mt-6 p-4 bg-white rounded-lg border border-yellow-300">
                 <p className="text-sm text-gray-600">
-                  <strong>Nota:</strong> Para trámites complejos como escrituras públicas, 
+                  <strong>Nota:</strong> Para trámites complejos como escrituras públicas,
                   recomendamos agendar una cita previa llamando al +56 32 2548174 o +56 51 2595840.
                 </p>
               </div>
@@ -187,11 +186,11 @@ export default function HorariosContent() {
                 ⚠️ Importante
               </h3>
               <p className="mb-4">
-                La notaría permanece cerrada en los siguientes días feriados legales. 
+                La notaría permanece cerrada en los siguientes días feriados legales.
                 Te recomendamos planificar tus trámites con anticipación.
               </p>
             </div>
-            
+
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
               {diasFeriados.map((dia, index) => (
                 <div key={index} className="bg-white p-4 border border-gray-200 rounded-lg">
@@ -222,7 +221,7 @@ export default function HorariosContent() {
                 <li>• Para trámites complejos, llama antes</li>
               </ul>
             </div>
-            
+
             <div className="bg-green-50 border border-green-200 rounded-lg p-6">
               <h3 className="text-xl font-bold mb-4 text-notaria-azul">
                 🚗 Cómo Llegar
@@ -246,14 +245,14 @@ export default function HorariosContent() {
             Llámanos para confirmar disponibilidad o consultar horarios especiales
           </p>
           <div className="flex flex-col sm:flex-row justify-center gap-4">
-            <a 
-              href="tel:+56512595840" 
+            <a
+              href="tel:+56512595840"
               className="bg-notaria-dorado text-notaria-azul font-bold py-3 px-6 rounded-lg hover:bg-yellow-400 transition"
             >
               📞 Llamar: +56 51 2595840
             </a>
-            <a 
-              href="tel:+56322548174" 
+            <a
+              href="tel:+56322548174"
               className="bg-notaria-dorado text-notaria-azul font-bold py-3 px-6 rounded-lg hover:bg-yellow-400 transition"
             >
               📞 Llamar: +56 32 2548174

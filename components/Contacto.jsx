@@ -22,7 +22,7 @@ export default function Contacto() {
             Contáctanos
           </h2>
           <p className="text-xl text-blue-100 max-w-2xl mx-auto">
-            Estamos aquí para ayudarte con todos tus trámites notariales. 
+            Estamos aquí para ayudarte con todos tus trámites notariales.
             Contáctanos y te responderemos lo antes posible.
           </p>
         </div>
@@ -34,7 +34,7 @@ export default function Contacto() {
               <h3 className="text-2xl font-semibold text-white mb-6">
                 Información de Contacto
               </h3>
-              
+
               <div className="space-y-6">
                 {/* Teléfono */}
                 <div className="flex items-center space-x-4">
@@ -47,7 +47,7 @@ export default function Contacto() {
                     <h4 className="text-lg font-semibold text-white">Teléfonos</h4>
                     <p className="text-blue-100">+56 32 2548174</p>
                     <p className="text-blue-100">+56 51 2595840</p>
-                    <p className="text-sm text-blue-200">Lunes a Jueves 9:00-17:30, Viernes 9:00-16:30</p>
+                    <p className="text-sm text-blue-200">Lunes a Viernes 9:00 - 16:30 (horario continuo)</p>
                   </div>
                 </div>
 
@@ -90,10 +90,8 @@ export default function Contacto() {
                   </div>
                   <div>
                     <h4 className="text-lg font-semibold text-white">Horarios</h4>
-                    <p className="text-blue-100">Lunes a Jueves</p>
-                    <p className="text-blue-100">09:00 - 14:00 | 15:00 - 17:30</p>
-                    <p className="text-blue-100 mt-2">Viernes</p>
-                    <p className="text-blue-100">09:00 - 14:00 | 15:00 - 16:30</p>
+                     <p className="text-blue-100">Lunes a Viernes</p>
+                     <p className="text-blue-100">09:00 - 16:30 (horario continuo)</p>
                   </div>
                 </div>
               </div>
@@ -270,7 +268,7 @@ export default function Contacto() {
               ¿Necesitas atención inmediata?
             </h3>
             <p className="text-blue-100 mb-6">
-              Para consultas urgentes o que requieran atención personalizada, 
+              Para consultas urgentes o que requieran atención personalizada,
               te recomendamos visitarnos directamente en nuestras oficinas.
             </p>
             <button
