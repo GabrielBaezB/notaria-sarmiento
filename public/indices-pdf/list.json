@@ -16,5 +16,17 @@
     "ano": "2026",
     "filename": "indice-julio-2026.pdf",
     "url": "/indices-pdf/indice-julio-2026.pdf"
+  },
+  {
+    "mes": "Agosto",
+    "ano": "2026",
+    "filename": "indice-agosto-2026.pdf",
+    "url": "/indices-pdf/indice-agosto-2026.pdf"
+  },
+  {
+    "mes": "Septiembre",
+    "ano": "2026",
+    "filename": "indice-septiembre-2026.pdf",
+    "url": "/indices-pdf/indice-septiembre-2026.pdf"
   }
 ]
