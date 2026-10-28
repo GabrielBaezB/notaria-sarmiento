@@ -47,12 +47,11 @@ export default function EquipoPage() {
               <li>INES ANGELICA SAAVEDRA DURAN.</li>
               <li>WENDY ADAMAR IBARRA MEDINA.</li>
               <li>IRENE PRISCILLA DEL CARMEN EMBRY MCGRATH.</li>
-              <li>DANIELA GIOVANNA FREDES SAN JUAN.</li>
             </ul>
 
             <div className="mt-6 pt-4 border-t border-gray-100 flex justify-between items-center text-sm text-gray-500">
-              <span>Total de remuneraciones:</span>
-              <span className="font-medium text-gray-700">$6.850.927 pesos</span>
+              {/* <span>Total de remuneraciones:</span> */}
+              {/* <span className="font-medium text-gray-700">$6.850.927 pesos</span> */}
             </div>
           </section>
         </div>
