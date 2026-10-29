@@ -101,15 +101,17 @@ export default function RootLayout({ children }) {
         {/* Preconnect to external origins - Early hints */}
         <link rel="preconnect" href="https://www.googletagmanager.com" crossOrigin="anonymous" />
         <link rel="preconnect" href="https://www.google-analytics.com" crossOrigin="anonymous" />
+
         <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
         <link rel="dns-prefetch" href="https://www.google-analytics.com" />
+
 
         {/* Canonical */}
         <link rel="canonical" href={metadata.openGraph.url} />
         <link rel="icon" href="/favicon.ico" />
-        <link rel="preload" href="/carrusel1.webp" as="image" fetchPriority="high" type="image/webp" />
+
         <link rel="preload" href="/logo.svg" as="image" type="image/svg+xml" />
-        <link rel="preload" href="/favicon.ico" as="image" type="image/x-icon" />
+
         <link rel="sitemap" type="application/xml" href="/sitemap.xml" />
 
         {/* PWA */}
