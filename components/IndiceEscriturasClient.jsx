@@ -1,111 +1,83 @@
 "use client";
 
-import { useState, useEffect, useMemo, useRef, useCallback } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { FiSearch, FiFilter, FiCalendar, FiFileText, FiUser, FiHash, FiDownload } from 'react-icons/fi';
+import { useYearLazyData, useFilteredPagination } from '../utils/useFilteredPagination';
+import Pagination from './Pagination';
 
 const INITIAL_FILTERS = {
-  ano: '',
   numeroRepertorio: '',
   materia: '',
   compareciente: '',
   fechaEscritura: ''
 };
 
+function filterEscrituras(data, activeFilters) {
+  const qRep = activeFilters.numeroRepertorio.trim().toLowerCase();
+  const qMateria = activeFilters.materia.trim().toLowerCase();
+  const qComp = activeFilters.compareciente.trim().toLowerCase();
+  const qFecha = activeFilters.fechaEscritura.trim();
+
+  if (!qRep && !qMateria && !qComp && !qFecha) {
+    return data;
+  }
+
+  return data.filter((item) => {
+    if (qRep) {
+      const rep = item['Numero de repertorio'];
+      if (!rep || !rep.toLowerCase().includes(qRep)) return false;
+    }
+
+    if (qMateria) {
+      const mat = item.materia;
+      if (!mat || !mat.toLowerCase().includes(qMateria)) return false;
+    }
+
+    if (qComp) {
+      const c1 = item['Compareciente 1'];
+      const c2 = item['Compareciente 2'];
+      const match1 = c1 && c1.toLowerCase().includes(qComp);
+      const match2 = c2 && c2.toLowerCase().includes(qComp);
+      if (!match1 && !match2) return false;
+    }
+
+    if (qFecha) {
+      const fecha = item['Fecha de escritura'];
+      if (!fecha || !fecha.includes(qFecha)) return false;
+    }
+
+    return true;
+  });
+}
+
 export default function IndiceEscriturasClient() {
-  const [yearsIndex, setYearsIndex] = useState([]);
-  const [data, setData] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const {
+    yearsIndex,
+    selectedYear,
+    changeYear,
+    data,
+    loading,
+    error
+  } = useYearLazyData('/data/index.json', 'escrituras');
 
-  // Caché en memoria de datos ya descargados por año
-  const yearCacheRef = useRef(new Map());
-
-  // Estados para los filtros (inputs inmediatos + versión con debounce para filtrado reactivo)
-  const [filters, setFilters] = useState(INITIAL_FILTERS);
-  const [debouncedFilters, setDebouncedFilters] = useState(INITIAL_FILTERS);
-
-  // Estados para la paginación
-  const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 20;
+  const {
+    filters,
+    setFilters,
+    filteredData,
+    currentItems,
+    currentPage,
+    setCurrentPage,
+    totalPages,
+    paginate,
+    applyFilters,
+    resetFilters
+  } = useFilteredPagination(data, INITIAL_FILTERS, filterEscrituras);
 
   // Estados para pestañas y lista de PDFs
   const [activeTab, setActiveTab] = useState('buscador'); // 'buscador' | 'pdfs'
   const [pdfList, setPdfList] = useState([]);
   const [loadingPdfs, setLoadingPdfs] = useState(false);
   const pdfLoadedRef = useRef(false);
-
-  // Función para cargar un año específico o todos los años bajo demanda con caché
-  const loadYearData = useCallback(async (selectedYear, availableYears = yearsIndex) => {
-    if (!selectedYear) return;
-    setLoading(true);
-    setError(null);
-
-    try {
-      if (selectedYear === 'ALL') {
-        const yearsToLoad = availableYears.map(y => y.ano);
-        const missingYears = yearsToLoad.filter(yr => !yearCacheRef.current.has(yr));
-
-        if (missingYears.length > 0) {
-          const responses = await Promise.all(
-            missingYears.map(async (yr) => {
-              const res = await fetch(`/data/escrituras-${yr}.json`);
-              if (!res.ok) throw new Error(`Error al cargar el año ${yr}`);
-              const json = await res.json();
-              return [yr, json];
-            })
-          );
-          for (const [yr, json] of responses) {
-            yearCacheRef.current.set(yr, json);
-          }
-        }
-
-        const combined = yearsToLoad.flatMap(yr => yearCacheRef.current.get(yr) || []);
-        setData(combined);
-      } else {
-        if (!yearCacheRef.current.has(selectedYear)) {
-          const response = await fetch(`/data/escrituras-${selectedYear}.json`);
-          if (!response.ok) throw new Error(`Error al cargar los datos del año ${selectedYear}`);
-          const jsonData = await response.json();
-          yearCacheRef.current.set(selectedYear, jsonData);
-        }
-        setData(yearCacheRef.current.get(selectedYear) || []);
-      }
-    } catch (err) {
-      setError(err.message);
-    } finally {
-      setLoading(false);
-    }
-  }, [yearsIndex]);
-
-  // Cargar índice de años y el año más reciente al montar
-  useEffect(() => {
-    let isMounted = true;
-
-    const init = async () => {
-      try {
-        const res = await fetch('/data/index.json');
-        if (!res.ok) throw new Error('Error al cargar el índice de años');
-        const indexJson = await res.json();
-        if (!isMounted) return;
-
-        setYearsIndex(indexJson);
-        const defaultYear = indexJson[0]?.ano || '2026';
-        setFilters(prev => ({ ...prev, ano: defaultYear }));
-        setDebouncedFilters(prev => ({ ...prev, ano: defaultYear }));
-        await loadYearData(defaultYear, indexJson);
-      } catch (err) {
-        if (isMounted) {
-          setError(err.message);
-          setLoading(false);
-        }
-      }
-    };
-
-    init();
-    return () => {
-      isMounted = false;
-    };
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Cargar lista de PDFs solo cuando el usuario abre la pestaña de PDFs (lazy load)
   useEffect(() => {
@@ -130,88 +102,18 @@ export default function IndiceEscriturasClient() {
     loadPdfList();
   }, [activeTab]);
 
-  // Debounce reactivo para los filtros de texto (250ms)
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setDebouncedFilters(filters);
-      setCurrentPage(1);
-    }, 250);
-
-    return () => clearTimeout(timer);
-  }, [filters]);
-
-  // Cambio de año: carga bajo demanda el archivo JSON de ese año
   const handleYearChange = (newYear) => {
-    setFilters(prev => ({ ...prev, ano: newYear }));
-    setDebouncedFilters(prev => ({ ...prev, ano: newYear }));
     setCurrentPage(1);
-    loadYearData(newYear);
+    changeYear(newYear);
   };
 
-  // Filtrado optimizado en una sola pasada con useMemo
-  const filteredData = useMemo(() => {
-    const qRep = debouncedFilters.numeroRepertorio.trim().toLowerCase();
-    const qMateria = debouncedFilters.materia.trim().toLowerCase();
-    const qComp = debouncedFilters.compareciente.trim().toLowerCase();
-    const qFecha = debouncedFilters.fechaEscritura.trim();
-
-    if (!qRep && !qMateria && !qComp && !qFecha) {
-      return data;
-    }
-
-    return data.filter((item) => {
-      if (qRep) {
-        const rep = item['Numero de repertorio'];
-        if (!rep || !rep.toLowerCase().includes(qRep)) return false;
-      }
-
-      if (qMateria) {
-        const mat = item.materia;
-        if (!mat || !mat.toLowerCase().includes(qMateria)) return false;
-      }
-
-      if (qComp) {
-        const c1 = item['Compareciente 1'];
-        const c2 = item['Compareciente 2'];
-        const match1 = c1 && c1.toLowerCase().includes(qComp);
-        const match2 = c2 && c2.toLowerCase().includes(qComp);
-        if (!match1 && !match2) return false;
-      }
-
-      if (qFecha) {
-        const fecha = item['Fecha de escritura'];
-        if (!fecha || !fecha.includes(qFecha)) return false;
-      }
-
-      return true;
-    });
-  }, [data, debouncedFilters]);
-
-  // Aplicar filtros de inmediato (si el usuario pulsa Buscar o Enter)
-  const applyFilters = () => {
-    setDebouncedFilters(filters);
-    setCurrentPage(1);
-  };
-
-  // Limpiar filtros volviendo al año más reciente
   const clearFilters = () => {
-    const defaultYear = yearsIndex[0]?.ano || '2026';
-    const reset = { ...INITIAL_FILTERS, ano: defaultYear };
-    setFilters(reset);
-    setDebouncedFilters(reset);
-    setCurrentPage(1);
-    if (filters.ano !== defaultYear) {
-      loadYearData(defaultYear);
+    resetFilters();
+    const defaultYear = yearsIndex[0]?.ano;
+    if (defaultYear && selectedYear !== defaultYear) {
+      changeYear(defaultYear);
     }
   };
-
-  // Calcular datos para la paginación
-  const indexOfLastItem = currentPage * itemsPerPage;
-  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = filteredData.slice(indexOfFirstItem, indexOfLastItem);
-  const totalPages = Math.max(1, Math.ceil(filteredData.length / itemsPerPage));
-
-  const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   return (
     <div className="space-y-6">
@@ -263,7 +165,7 @@ export default function IndiceEscriturasClient() {
                   Año
                 </label>
                 <select
-                  value={filters.ano}
+                  value={selectedYear}
                   onChange={(e) => handleYearChange(e.target.value)}
                   className="w-full px-3 py-2 border border-gray-300 rounded-md bg-white focus:outline-none focus:ring-2 focus:ring-notaria-azul"
                 >
@@ -356,7 +258,7 @@ export default function IndiceEscriturasClient() {
               <div className="flex flex-col justify-center items-center py-32 h-full">
                 <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-notaria-azul"></div>
                 <p className="mt-4 text-gray-500 font-medium tracking-wide">
-                  Cargando escrituras {filters.ano === 'ALL' ? 'de todos los años' : `del año ${filters.ano}`}...
+                  Cargando escrituras {selectedYear === 'ALL' ? 'de todos los años' : `del año ${selectedYear}`}...
                 </p>
               </div>
             ) : error ? (
@@ -379,7 +281,7 @@ export default function IndiceEscriturasClient() {
                   <div className="text-center py-16 text-gray-500">
                     <FiSearch className="mx-auto h-16 w-16 mb-4 text-gray-300" />
                     <p className="text-lg">No se encontraron escrituras con los filtros aplicados</p>
-                    {filters.ano !== 'ALL' && (
+                    {selectedYear !== 'ALL' && (
                       <button
                         onClick={() => handleYearChange('ALL')}
                         className="mt-4 text-notaria-azul font-semibold hover:underline"
@@ -417,67 +319,11 @@ export default function IndiceEscriturasClient() {
                       </table>
                     </div>
 
-                    {/* Paginación */}
-                    {totalPages > 1 && (
-                      <div className="flex justify-center mt-6">
-                        <nav className="flex items-center space-x-2">
-                          <button
-                            onClick={() => paginate(currentPage - 1)}
-                            disabled={currentPage === 1}
-                            className="px-3 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-md hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
-                          >
-                            Anterior
-                          </button>
-
-                          {currentPage > 3 && (
-                            <>
-                              <button onClick={() => paginate(1)} className="px-3 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-md hover:bg-gray-50">1</button>
-                              {currentPage > 4 && <span className="px-2 text-gray-400">...</span>}
-                            </>
-                          )}
-
-                          {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
-                            let page;
-                            if (totalPages <= 5) page = i + 1;
-                            else if (currentPage <= 3) page = i + 1;
-                            else if (currentPage >= totalPages - 2) page = totalPages - 4 + i;
-                            else page = currentPage - 2 + i;
-
-                            if (page > 0 && page <= totalPages) {
-                              return (
-                                <button
-                                  key={page}
-                                  onClick={() => paginate(page)}
-                                  className={`px-3 py-2 text-sm font-medium rounded-md ${
-                                    currentPage === page
-                                      ? 'bg-notaria-azul text-white'
-                                      : 'text-gray-500 bg-white border border-gray-300 hover:bg-gray-50'
-                                  }`}
-                                >
-                                  {page}
-                                </button>
-                              );
-                            }
-                            return null;
-                          })}
-
-                          {currentPage < totalPages - 2 && (
-                            <>
-                              {currentPage < totalPages - 3 && <span className="px-2 text-gray-400">...</span>}
-                              <button onClick={() => paginate(totalPages)} className="px-3 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-md hover:bg-gray-50">{totalPages}</button>
-                            </>
-                          )}
-
-                          <button
-                            onClick={() => paginate(currentPage + 1)}
-                            disabled={currentPage === totalPages}
-                            className="px-3 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-md hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
-                          >
-                            Siguiente
-                          </button>
-                        </nav>
-                      </div>
-                    )}
+                    <Pagination
+                      currentPage={currentPage}
+                      totalPages={totalPages}
+                      onPageChange={paginate}
+                    />
                   </>
                 )}
               </>
