@@ -1,20 +1,133 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { navigateToAnchor } from '../utils/navigation';
+import Toast, { useToast } from './Toast';
+
+// Claves lógicas para no exponer correos directamente en los atributos value del DOM (<select>)
+// Soporta tokens/hashes de FormSubmit en variables de entorno si se configuran.
+const DESTINATARIOS = {
+  escrituras: {
+    label: 'Escrituras Públicas',
+    target: process.env.NEXT_PUBLIC_FORMSUBMIT_ESCRITURAS || process.env.NEXT_PUBLIC_EMAIL_ESCRITURAS || 'escrituras@notariasarmiento.cl'
+  },
+  privados: {
+    label: 'Documentos Privados',
+    target: process.env.NEXT_PUBLIC_FORMSUBMIT_PRIVADOS || process.env.NEXT_PUBLIC_EMAIL_PRIVADOS || 'documentos@notariasarmiento.cl'
+  },
+  general: {
+    label: 'Consulta General',
+    target: process.env.NEXT_PUBLIC_FORMSUBMIT_GENERAL || process.env.NEXT_PUBLIC_EMAIL_GENERAL || 'contacto@notariasarmiento.cl'
+  },
+  notificaciones: {
+    label: 'Seguimiento y Notificaciones',
+    target: process.env.NEXT_PUBLIC_FORMSUBMIT_NOTIFICACIONES || process.env.NEXT_PUBLIC_EMAIL_NOTIFICACIONES || 'consultas@notariasarmiento.cl'
+  }
+};
+
+const COOLDOWN_MS = 60000; // 60s entre envíos para mitigar spam
+const MIN_FILL_TIME_MS = 2500; // Tiempo mínimo humano para completar el formulario
 
 export default function Contacto() {
-  const emailOptions = [
-    { label: 'Escrituras Públicas', value: process.env.NEXT_PUBLIC_EMAIL_ESCRITURAS || 'escrituras@notariasarmiento.cl' },
-    { label: 'Documentos Privados', value: process.env.NEXT_PUBLIC_EMAIL_PRIVADOS || 'documentos@notariasarmiento.cl' },
-    { label: 'Consulta General', value: process.env.NEXT_PUBLIC_EMAIL_GENERAL || 'contacto@notariasarmiento.cl' },
-    { label: 'Seguimiento y Notificaciones', value: process.env.NEXT_PUBLIC_EMAIL_NOTIFICACIONES || 'consultas@notariasarmiento.cl' },
-  ];
+  const [destinoKey, setDestinoKey] = useState('escrituras');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [fallbackMailto, setFallbackMailto] = useState(null);
 
-  const [recipient, setRecipient] = useState(emailOptions[0].value);
+  const formLoadedAtRef = useRef(Date.now());
+  const lastSubmitAtRef = useRef(0);
+
+  const { toasts, removeToast, showSuccess, showError, showWarning } = useToast();
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const form = e.currentTarget;
+    const formData = new FormData(form);
+
+    // 1. Protección anti-bots: Honeypot (_honey) y tiempo mínimo de llenado
+    const honey = formData.get('_honey');
+    if (honey) {
+      return; // Bot detectado silenciosamente
+    }
+
+    const now = Date.now();
+    if (now - formLoadedAtRef.current < MIN_FILL_TIME_MS) {
+      showWarning('Por favor revisa los datos antes de enviar el formulario.');
+      return;
+    }
+
+    // 2. Rate-limiting en cliente (cooldown entre envíos)
+    if (now - lastSubmitAtRef.current < COOLDOWN_MS) {
+      const remainingSec = Math.ceil((COOLDOWN_MS - (now - lastSubmitAtRef.current)) / 1000);
+      showWarning(`Por favor espera ${remainingSec} segundos antes de enviar otro mensaje.`);
+      return;
+    }
+
+    const destinoConfig = DESTINATARIOS[destinoKey] || DESTINATARIOS.general;
+    const nombre = String(formData.get('nombre') || '').trim();
+    const correo = String(formData.get('correo') || '').trim();
+    const telefono = String(formData.get('telefono') || '').trim();
+    const asunto = String(formData.get('_subject') || '').trim();
+    const mensaje = String(formData.get('mensaje') || '').trim();
+
+    setIsSubmitting(true);
+    setFallbackMailto(null);
+
+    try {
+      const response = await fetch(`https://formsubmit.co/ajax/${encodeURIComponent(destinoConfig.target)}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify({
+          tipo_consulta: destinoConfig.label,
+          nombre,
+          correo,
+          telefono: telefono || 'No informado',
+          _subject: `[Web Notaría - ${destinoConfig.label}] ${asunto}`,
+          mensaje,
+          _honey: ''
+        })
+      });
+
+      const result = await response.json().catch(() => null);
+
+      if (!response.ok || (result && result.success === 'false')) {
+        throw new Error('No se pudo procesar el envío en el servidor de correo.');
+      }
+
+      lastSubmitAtRef.current = Date.now();
+      showSuccess('¡Mensaje enviado con éxito! Te responderemos a la brevedad.');
+      form.reset();
+      setDestinoKey('escrituras');
+    } catch (err) {
+      // Fallback: conservamos los datos escritos por el usuario y habilitamos envío directo por cliente de correo
+      const mailtoSubject = encodeURIComponent(`[${destinoConfig.label}] ${asunto}`);
+      const mailtoBody = encodeURIComponent(
+        `Nombre: ${nombre}\nCorreo: ${correo}\nTeléfono: ${telefono || 'No informado'}\nTipo de consulta: ${destinoConfig.label}\n\nMensaje:\n${mensaje}`
+      );
+      setFallbackMailto(`mailto:contacto@notariasarmiento.cl?subject=${mailtoSubject}&body=${mailtoBody}`);
+      showError('Hubo un problema al conectar con el servidor. Tu mensaje no se borró; puedes reintentar o enviarlo con el botón de respaldo.');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   return (
     <section id="contacto" className="py-20 px-6 bg-gradient-to-br from-notaria-azul to-blue-900">
+      {/* Notificaciones Toast */}
+      <div className="fixed top-20 right-4 z-[100] space-y-2">
+        {toasts.map((toast) => (
+          <Toast
+            key={toast.id}
+            message={toast.message}
+            type={toast.type}
+            duration={toast.duration}
+            onClose={() => removeToast(toast.id)}
+          />
+        ))}
+      </div>
+
       <div className="max-w-6xl mx-auto">
         {/* Título principal */}
         <div className="text-center mb-16">
@@ -90,8 +203,8 @@ export default function Contacto() {
                   </div>
                   <div>
                     <h4 className="text-lg font-semibold text-white">Horarios</h4>
-                     <p className="text-blue-100">Lunes a Viernes</p>
-                     <p className="text-blue-100">09:00 - 16:30 (horario continuo)</p>
+                    <p className="text-blue-100">Lunes a Viernes</p>
+                    <p className="text-blue-100">09:00 - 16:30 (horario continuo)</p>
                   </div>
                 </div>
               </div>
@@ -133,15 +246,18 @@ export default function Contacto() {
               Envíanos un mensaje
             </h3>
 
-            <form
-              action={`https://formsubmit.co/${recipient}`}
-              method="POST"
-              className="space-y-6"
-            >
-              <input type="hidden" name="_next" value="https://notariasarmiento.cl/#contacto" />
-              <input type="hidden" name="_captcha" value="false" />
+            <form onSubmit={handleSubmit} className="space-y-6">
+              {/* Honeypot oculto contra bots de spam */}
+              <input
+                type="text"
+                name="_honey"
+                tabIndex={-1}
+                autoComplete="off"
+                className="hidden"
+                aria-hidden="true"
+              />
 
-              {/* Destino */}
+              {/* Destino (usa claves lógicas sin exponer los emails en el DOM) */}
               <div>
                 <label
                   htmlFor="destino"
@@ -152,12 +268,12 @@ export default function Contacto() {
                 <select
                   id="destino"
                   name="destino"
-                  value={recipient}
-                  onChange={(e) => setRecipient(e.target.value)}
+                  value={destinoKey}
+                  onChange={(e) => setDestinoKey(e.target.value)}
                   className="w-full h-12 px-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-notaria-dorado focus:border-transparent transition-all duration-200"
                 >
-                  {emailOptions.map((opt) => (
-                    <option key={opt.value} value={opt.value}>
+                  {Object.entries(DESTINATARIOS).map(([key, opt]) => (
+                    <option key={key} value={key}>
                       {opt.label}
                     </option>
                   ))}
@@ -243,14 +359,39 @@ export default function Contacto() {
               {/* Botón */}
               <button
                 type="submit"
-                className="w-full bg-notaria-dorado text-white font-semibold py-4 rounded-lg hover:bg-opacity-90 transition-all duration-200 shadow-lg text-lg"
+                disabled={isSubmitting}
+                className="w-full bg-notaria-dorado text-white font-semibold py-4 rounded-lg hover:bg-opacity-90 transition-all duration-200 shadow-lg text-lg disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center"
               >
-                <svg className="w-5 h-5 inline mr-2" fill="currentColor" viewBox="0 0 20 20">
-                  <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
-                  <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
-                </svg>
-                Enviar mensaje
+                {isSubmitting ? (
+                  <>
+                    <span className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-3"></span>
+                    Enviando mensaje...
+                  </>
+                ) : (
+                  <>
+                    <svg className="w-5 h-5 inline mr-2" fill="currentColor" viewBox="0 0 20 20">
+                      <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
+                      <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
+                    </svg>
+                    Enviar mensaje
+                  </>
+                )}
               </button>
+
+              {/* Respaldo (Fallback) en caso de caída de FormSubmit */}
+              {fallbackMailto && (
+                <div className="p-4 bg-amber-50 border border-amber-200 rounded-lg text-sm text-amber-900 space-y-2">
+                  <p className="font-medium">
+                    ¿Problemas con el envío automático? Puedes enviar tu consulta directamente con los datos ya escritos:
+                  </p>
+                  <a
+                    href={fallbackMailto}
+                    className="inline-block bg-notaria-azul text-white font-semibold px-4 py-2 rounded-md hover:bg-opacity-90 transition"
+                  >
+                    Abrir en mi aplicación de correo
+                  </a>
+                </div>
+              )}
             </form>
 
             <div className="mt-6 text-center">
