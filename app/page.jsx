@@ -1,14 +1,10 @@
 import dynamic from 'next/dynamic';
+import ServiciosSection from '../components/ServiciosSection';
+import SeguimientoBanner from '../components/SeguimientoBanner';
 import Hero from '../components/Hero';
 
-// Lazy load de componentes no críticos para mejorar LCP
-const SeguimientoBanner = dynamic(() => import('../components/SeguimientoBanner'), {
-  loading: () => <div className="min-h-[100px]" />,
-});
+// Lazy load de componentes debajo del pliegue para mejorar LCP
 const NotariaExpressSection = dynamic(() => import('../components/NotariaExpressSection'), {
-  loading: () => <div className="min-h-[200px]" />,
-});
-const ServiciosSection = dynamic(() => import('../components/ServiciosSection'), {
   loading: () => <div className="min-h-[200px]" />,
 });
 const Ubicacion = dynamic(() => import('../components/Ubicacion'), {
@@ -35,13 +31,14 @@ export const metadata = {
 export default function Home() {
   return (
     <main className="min-h-screen">
-      <Hero />
-      <SeguimientoBanner />
-      <NotariaExpressSection />
       <ServiciosSection />
+      <SeguimientoBanner />
+      <Hero />
+      <NotariaExpressSection />
       <Ubicacion />
       <Contacto />
       <Footer />
     </main>
+
   );
 }
