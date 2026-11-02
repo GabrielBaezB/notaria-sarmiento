@@ -1,20 +1,7 @@
-'use client';
-
-import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { SERVICIOS } from '../utils/servicios';
 
 export default function ServiciosContent() {
-  const [isClient, setIsClient] = useState(false);
-
-  useEffect(() => {
-    setIsClient(true);
-  }, []);
-
-  if (!isClient) {
-    return null;
-  }
-
   const serviciosPrincipales = [
     {
       title: 'Poder Simple',
@@ -136,7 +123,7 @@ export default function ServiciosContent() {
             ¿Necesitas un servicio notarial?
           </h2>
           <p className="mb-6">
-                            Visítanos en Chacabuco 2845, Valparaíso<br />
+            Visítanos en Chacabuco 2845, Valparaíso<br />
             Frente al terminal de buses
           </p>
           <div className="flex flex-col sm:flex-row justify-center gap-4">
@@ -157,4 +144,4 @@ export default function ServiciosContent() {
       </article>
     </main>
   );
-} 
+}

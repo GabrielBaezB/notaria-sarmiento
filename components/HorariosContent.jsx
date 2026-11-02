@@ -1,19 +1,6 @@
-'use client';
-
-import { useState, useEffect } from 'react';
 import Link from 'next/link';
 
 export default function HorariosContent() {
-  const [isClient, setIsClient] = useState(false);
-
-  useEffect(() => {
-    setIsClient(true);
-  }, []);
-
-  if (!isClient) {
-    return null;
-  }
-
   const horarios = [
     { dia: 'Lunes', horario: '09:00 - 16:30', estado: 'Abierto' },
     { dia: 'Martes', horario: '09:00 - 16:30', estado: 'Abierto' },
@@ -262,4 +249,4 @@ export default function HorariosContent() {
       </article>
     </main>
   );
-} 
+}

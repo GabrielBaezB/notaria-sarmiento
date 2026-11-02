@@ -1,15 +1,10 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import Link from 'next/link';
 
 export default function FAQContent() {
-  const [isClient, setIsClient] = useState(false);
   const [openItems, setOpenItems] = useState(new Set());
-
-  useEffect(() => {
-    setIsClient(true);
-  }, []);
 
   const toggleItem = (index) => {
     const newOpenItems = new Set(openItems);
@@ -20,10 +15,6 @@ export default function FAQContent() {
     }
     setOpenItems(newOpenItems);
   };
-
-  if (!isClient) {
-    return null;
-  }
 
   const faqs = [
     {
@@ -136,4 +127,4 @@ export default function FAQContent() {
       </article>
     </main>
   );
-} 
+}

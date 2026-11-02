@@ -1,20 +1,7 @@
-'use client';
-
-import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { HiOutlineLocationMarker, HiOutlinePhone, HiOutlineOfficeBuilding } from 'react-icons/hi';
 
 export default function ContactoClient() {
-  const [isClient, setIsClient] = useState(false);
-
-  useEffect(() => {
-    setIsClient(true);
-  }, []);
-
-  if (!isClient) {
-    return null;
-  }
-
   return (
     <main className="container mx-auto px-4 py-8">
       <nav aria-label="Breadcrumb" className="mb-6 text-sm">
@@ -262,4 +249,4 @@ export default function ContactoClient() {
       </article>
     </main>
   );
-} 
+}

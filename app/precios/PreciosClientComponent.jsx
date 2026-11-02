@@ -272,8 +272,8 @@ export default function PreciosClientComponent() {
                   key={cat.id}
                   onClick={() => setActiveCategory(cat.id)}
                   className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${activeCategory === cat.id
-                      ? 'bg-[#1B2A41] text-white'
-                      : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
+                    ? 'bg-[#1B2A41] text-white'
+                    : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
                     }`}
                 >
                   {cat.label}
@@ -404,7 +404,7 @@ export default function PreciosClientComponent() {
         </main>
 
         <footer className="bg-[#0F172A] text-slate-400 text-center py-4 px-4 text-xs border-t border-slate-800">
-          Notaría Sarmiento Moreno — Prat 856 / Chacabuco 1845, Valparaíso | Documento Protegido © 2026
+          Notaría Sarmiento Moreno — Chacabuco 2843, Valparaíso | Documento Protegido © 2026
         </footer>
       </div>
     </div>
