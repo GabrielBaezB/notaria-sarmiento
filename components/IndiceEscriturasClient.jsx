@@ -1,54 +1,124 @@
 "use client";
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo, useRef, useCallback } from 'react';
 import { FiSearch, FiFilter, FiCalendar, FiFileText, FiUser, FiHash, FiDownload } from 'react-icons/fi';
 
+const INITIAL_FILTERS = {
+  ano: '',
+  numeroRepertorio: '',
+  materia: '',
+  compareciente: '',
+  fechaEscritura: ''
+};
+
 export default function IndiceEscriturasClient() {
+  const [yearsIndex, setYearsIndex] = useState([]);
   const [data, setData] = useState([]);
-  const [filteredData, setFilteredData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // Estados para los filtros
-  const [filters, setFilters] = useState({
-    ano: '',
-    numeroRepertorio: '',
-    materia: '',
-    compareciente: '',
-    fechaEscritura: ''
-  });
+  // Caché en memoria de datos ya descargados por año
+  const yearCacheRef = useRef(new Map());
+
+  // Estados para los filtros (inputs inmediatos + versión con debounce para filtrado reactivo)
+  const [filters, setFilters] = useState(INITIAL_FILTERS);
+  const [debouncedFilters, setDebouncedFilters] = useState(INITIAL_FILTERS);
 
   // Estados para la paginación
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage] = useState(20);
+  const itemsPerPage = 20;
 
   // Estados para pestañas y lista de PDFs
   const [activeTab, setActiveTab] = useState('buscador'); // 'buscador' | 'pdfs'
   const [pdfList, setPdfList] = useState([]);
-  const [loadingPdfs, setLoadingPdfs] = useState(true);
+  const [loadingPdfs, setLoadingPdfs] = useState(false);
+  const pdfLoadedRef = useRef(false);
 
-  // Cargar datos al montar el componente
+  // Función para cargar un año específico o todos los años bajo demanda con caché
+  const loadYearData = useCallback(async (selectedYear, availableYears = yearsIndex) => {
+    if (!selectedYear) return;
+    setLoading(true);
+    setError(null);
+
+    try {
+      if (selectedYear === 'ALL') {
+        const yearsToLoad = availableYears.map(y => y.ano);
+        const missingYears = yearsToLoad.filter(yr => !yearCacheRef.current.has(yr));
+
+        if (missingYears.length > 0) {
+          const responses = await Promise.all(
+            missingYears.map(async (yr) => {
+              const res = await fetch(`/data/escrituras-${yr}.json`);
+              if (!res.ok) throw new Error(`Error al cargar el año ${yr}`);
+              const json = await res.json();
+              return [yr, json];
+            })
+          );
+          for (const [yr, json] of responses) {
+            yearCacheRef.current.set(yr, json);
+          }
+        }
+
+        const combined = yearsToLoad.flatMap(yr => yearCacheRef.current.get(yr) || []);
+        setData(combined);
+      } else {
+        if (!yearCacheRef.current.has(selectedYear)) {
+          const response = await fetch(`/data/escrituras-${selectedYear}.json`);
+          if (!response.ok) throw new Error(`Error al cargar los datos del año ${selectedYear}`);
+          const jsonData = await response.json();
+          yearCacheRef.current.set(selectedYear, jsonData);
+        }
+        setData(yearCacheRef.current.get(selectedYear) || []);
+      }
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  }, [yearsIndex]);
+
+  // Cargar índice de años y el año más reciente al montar
   useEffect(() => {
-    const loadData = async () => {
+    let isMounted = true;
+
+    const init = async () => {
       try {
-        const response = await fetch('/data.json');
-        if (!response.ok) throw new Error('Error al cargar los datos');
-        const jsonData = await response.json();
-        setData(jsonData);
-        setFilteredData(jsonData);
+        const res = await fetch('/data/index.json');
+        if (!res.ok) throw new Error('Error al cargar el índice de años');
+        const indexJson = await res.json();
+        if (!isMounted) return;
+
+        setYearsIndex(indexJson);
+        const defaultYear = indexJson[0]?.ano || '2026';
+        setFilters(prev => ({ ...prev, ano: defaultYear }));
+        setDebouncedFilters(prev => ({ ...prev, ano: defaultYear }));
+        await loadYearData(defaultYear, indexJson);
       } catch (err) {
-        setError(err.message);
-      } finally {
-        setLoading(false);
+        if (isMounted) {
+          setError(err.message);
+          setLoading(false);
+        }
       }
     };
 
+    init();
+    return () => {
+      isMounted = false;
+    };
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Cargar lista de PDFs solo cuando el usuario abre la pestaña de PDFs (lazy load)
+  useEffect(() => {
+    if (activeTab !== 'pdfs' || pdfLoadedRef.current) return;
+
     const loadPdfList = async () => {
+      setLoadingPdfs(true);
       try {
         const response = await fetch('/indices-pdf/list.json');
         if (response.ok) {
           const json = await response.json();
           setPdfList(json);
+          pdfLoadedRef.current = true;
         }
       } catch (e) {
         console.error('Error al cargar la lista de PDFs', e);
@@ -57,71 +127,89 @@ export default function IndiceEscriturasClient() {
       }
     };
 
-    loadData();
     loadPdfList();
-  }, []);
+  }, [activeTab]);
 
-  // Función para aplicar filtros
+  // Debounce reactivo para los filtros de texto (250ms)
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedFilters(filters);
+      setCurrentPage(1);
+    }, 250);
+
+    return () => clearTimeout(timer);
+  }, [filters]);
+
+  // Cambio de año: carga bajo demanda el archivo JSON de ese año
+  const handleYearChange = (newYear) => {
+    setFilters(prev => ({ ...prev, ano: newYear }));
+    setDebouncedFilters(prev => ({ ...prev, ano: newYear }));
+    setCurrentPage(1);
+    loadYearData(newYear);
+  };
+
+  // Filtrado optimizado en una sola pasada con useMemo
+  const filteredData = useMemo(() => {
+    const qRep = debouncedFilters.numeroRepertorio.trim().toLowerCase();
+    const qMateria = debouncedFilters.materia.trim().toLowerCase();
+    const qComp = debouncedFilters.compareciente.trim().toLowerCase();
+    const qFecha = debouncedFilters.fechaEscritura.trim();
+
+    if (!qRep && !qMateria && !qComp && !qFecha) {
+      return data;
+    }
+
+    return data.filter((item) => {
+      if (qRep) {
+        const rep = item['Numero de repertorio'];
+        if (!rep || !rep.toLowerCase().includes(qRep)) return false;
+      }
+
+      if (qMateria) {
+        const mat = item.materia;
+        if (!mat || !mat.toLowerCase().includes(qMateria)) return false;
+      }
+
+      if (qComp) {
+        const c1 = item['Compareciente 1'];
+        const c2 = item['Compareciente 2'];
+        const match1 = c1 && c1.toLowerCase().includes(qComp);
+        const match2 = c2 && c2.toLowerCase().includes(qComp);
+        if (!match1 && !match2) return false;
+      }
+
+      if (qFecha) {
+        const fecha = item['Fecha de escritura'];
+        if (!fecha || !fecha.includes(qFecha)) return false;
+      }
+
+      return true;
+    });
+  }, [data, debouncedFilters]);
+
+  // Aplicar filtros de inmediato (si el usuario pulsa Buscar o Enter)
   const applyFilters = () => {
-    let filtered = data;
-
-    if (filters.ano) {
-      filtered = filtered.filter(item =>
-        item.ano && item.ano.toLowerCase().includes(filters.ano.toLowerCase())
-      );
-    }
-
-    if (filters.numeroRepertorio) {
-      filtered = filtered.filter(item =>
-        item['Numero de repertorio'] &&
-        item['Numero de repertorio'].toLowerCase().includes(filters.numeroRepertorio.toLowerCase())
-      );
-    }
-
-    if (filters.materia) {
-      filtered = filtered.filter(item =>
-        item.materia && item.materia.toLowerCase().includes(filters.materia.toLowerCase())
-      );
-    }
-
-    if (filters.compareciente) {
-      filtered = filtered.filter(item =>
-        (item['Compareciente 1'] &&
-          item['Compareciente 1'].toLowerCase().includes(filters.compareciente.toLowerCase())) ||
-        (item['Compareciente 2'] &&
-          item['Compareciente 2'].toLowerCase().includes(filters.compareciente.toLowerCase()))
-      );
-    }
-
-    if (filters.fechaEscritura) {
-      filtered = filtered.filter(item =>
-        item['Fecha de escritura'] &&
-        item['Fecha de escritura'].includes(filters.fechaEscritura)
-      );
-    }
-
-    setFilteredData(filtered);
+    setDebouncedFilters(filters);
     setCurrentPage(1);
   };
 
-  // Función para limpiar filtros
+  // Limpiar filtros volviendo al año más reciente
   const clearFilters = () => {
-    setFilters({
-      ano: '',
-      numeroRepertorio: '',
-      materia: '',
-      compareciente: '',
-      fechaEscritura: ''
-    });
-    setFilteredData(data);
+    const defaultYear = yearsIndex[0]?.ano || '2026';
+    const reset = { ...INITIAL_FILTERS, ano: defaultYear };
+    setFilters(reset);
+    setDebouncedFilters(reset);
     setCurrentPage(1);
+    if (filters.ano !== defaultYear) {
+      loadYearData(defaultYear);
+    }
   };
 
   // Calcular datos para la paginación
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentItems = filteredData.slice(indexOfFirstItem, indexOfLastItem);
-  const totalPages = Math.ceil(filteredData.length / itemsPerPage);
+  const totalPages = Math.max(1, Math.ceil(filteredData.length / itemsPerPage));
 
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
@@ -158,12 +246,36 @@ export default function IndiceEscriturasClient() {
         <>
           {/* Filtros de búsqueda */}
           <div className="bg-white rounded-lg shadow-md p-6">
-            <div className="flex items-center mb-4">
-              <FiFilter className="text-notaria-azul mr-2 text-xl" />
-              <h2 className="text-xl font-semibold text-gray-800">Filtros de Búsqueda</h2>
+            <div className="flex items-center justify-between mb-4 flex-wrap gap-2">
+              <div className="flex items-center">
+                <FiFilter className="text-notaria-azul mr-2 text-xl" />
+                <h2 className="text-xl font-semibold text-gray-800">Filtros de Búsqueda</h2>
+              </div>
+              <span className="text-xs text-gray-500">
+                Los resultados se actualizan automáticamente mientras escribes
+              </span>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <FiCalendar className="inline mr-1" />
+                  Año
+                </label>
+                <select
+                  value={filters.ano}
+                  onChange={(e) => handleYearChange(e.target.value)}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md bg-white focus:outline-none focus:ring-2 focus:ring-notaria-azul"
+                >
+                  {yearsIndex.map((y) => (
+                    <option key={y.ano} value={y.ano}>
+                      {y.ano} ({y.count} escrituras)
+                    </option>
+                  ))}
+                  <option value="ALL">Todos los años (Histórico completo)</option>
+                </select>
+              </div>
+
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
                   <FiUser className="inline mr-1" />
@@ -180,20 +292,6 @@ export default function IndiceEscriturasClient() {
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                  <FiCalendar className="inline mr-1" />
-                  Año
-                </label>
-                <input
-                  type="text"
-                  value={filters.ano}
-                  onChange={(e) => setFilters({ ...filters, ano: e.target.value })}
-                  placeholder="Ej: 2026"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-notaria-azul"
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
                   <FiFileText className="inline mr-1" />
                   Materia
                 </label>
@@ -201,7 +299,7 @@ export default function IndiceEscriturasClient() {
                   type="text"
                   value={filters.materia}
                   onChange={(e) => setFilters({ ...filters, materia: e.target.value })}
-                  placeholder="Ej: RENUNCIA A LOS GANANCIALES"
+                  placeholder="Ej: COMPRAVENTA, MANDATO..."
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-notaria-azul"
                 />
               </div>
@@ -215,7 +313,7 @@ export default function IndiceEscriturasClient() {
                   type="text"
                   value={filters.numeroRepertorio}
                   onChange={(e) => setFilters({ ...filters, numeroRepertorio: e.target.value })}
-                  placeholder="Ej: 539"
+                  placeholder="Ej: 407"
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-notaria-azul"
                 />
               </div>
@@ -229,7 +327,7 @@ export default function IndiceEscriturasClient() {
                   type="text"
                   value={filters.fechaEscritura}
                   onChange={(e) => setFilters({ ...filters, fechaEscritura: e.target.value })}
-                  placeholder="Ej: 03/07/2025"
+                  placeholder="Ej: 30/04/2026"
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-notaria-azul"
                 />
               </div>
@@ -257,7 +355,9 @@ export default function IndiceEscriturasClient() {
             {loading ? (
               <div className="flex flex-col justify-center items-center py-32 h-full">
                 <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-notaria-azul"></div>
-                <p className="mt-4 text-gray-500 font-medium tracking-wide">Cargando base de datos...</p>
+                <p className="mt-4 text-gray-500 font-medium tracking-wide">
+                  Cargando escrituras {filters.ano === 'ALL' ? 'de todos los años' : `del año ${filters.ano}`}...
+                </p>
               </div>
             ) : error ? (
               <div className="bg-red-50 border border-red-200 rounded-lg p-6 text-center mt-8">
@@ -279,6 +379,14 @@ export default function IndiceEscriturasClient() {
                   <div className="text-center py-16 text-gray-500">
                     <FiSearch className="mx-auto h-16 w-16 mb-4 text-gray-300" />
                     <p className="text-lg">No se encontraron escrituras con los filtros aplicados</p>
+                    {filters.ano !== 'ALL' && (
+                      <button
+                        onClick={() => handleYearChange('ALL')}
+                        className="mt-4 text-notaria-azul font-semibold hover:underline"
+                      >
+                        Buscar en todos los años (1998 - {yearsIndex[0]?.ano || '2026'})
+                      </button>
+                    )}
                   </div>
                 ) : (
                   <>
@@ -296,7 +404,7 @@ export default function IndiceEscriturasClient() {
                         </thead>
                         <tbody className="bg-white divide-y divide-gray-200">
                           {currentItems.map((item, index) => (
-                            <tr key={index} className="hover:bg-gray-50">
+                            <tr key={`${item.ano}-${item['Numero de repertorio']}-${index}`} className="hover:bg-gray-50">
                               <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{item.ano || '-'}</td>
                               <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{item['Numero de repertorio'] || '-'}</td>
                               <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{item['Fecha de escritura'] || '-'}</td>

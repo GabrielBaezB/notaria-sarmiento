@@ -50,3 +50,6 @@ nuevos-datos.xlsx
 *.pdf
 
 certificates
+
+# Archivos generados por año a partir de data.json
+/public/data/

@@ -138,8 +138,30 @@ async function importData() {
     return repB - repA; 
   });
 
-  console.log('💾 Guardando archivo final en data.json...');
+  console.log('💾 Guardando archivo final en data.json y particionando por año en public/data/...');
   fs.writeFileSync(JSON_PATH, JSON.stringify(finalData, null, 4), 'utf-8');
+
+  const dataDir = path.join(__dirname, '../public/data');
+  if (!fs.existsSync(dataDir)) {
+    fs.mkdirSync(dataDir, { recursive: true });
+  }
+
+  const byYear = new Map();
+  for (const record of finalData) {
+    const yr = String(record['ano'] || '').trim();
+    if (!yr) continue;
+    if (!byYear.has(yr)) byYear.set(yr, []);
+    byYear.get(yr).push(record);
+  }
+
+  const yearsIndex = Array.from(byYear.entries())
+    .sort((a, b) => (parseInt(b[0]) || 0) - (parseInt(a[0]) || 0))
+    .map(([ano, records]) => {
+      fs.writeFileSync(path.join(dataDir, `escrituras-${ano}.json`), JSON.stringify(records), 'utf-8');
+      return { ano, count: records.length };
+    });
+
+  fs.writeFileSync(path.join(dataDir, 'index.json'), JSON.stringify(yearsIndex), 'utf-8');
 
   console.log(`\n🎉 ¡ÉXITO! Operación completada.`);
   console.log(`- Registros en la web antes de actualizar: ${currentData.length}`);

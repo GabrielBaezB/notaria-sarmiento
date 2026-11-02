@@ -14,8 +14,10 @@
   "private": true,
   "homepage": "https://notariasarmiento.cl",
   "scripts": {
+    "predev": "node scripts/split-data.js",
     "dev": "next dev",
     "dev:https": "next dev --experimental-https",
+    "prebuild": "node scripts/split-data.js",
     "build": "next build",
     "postbuild": "next-sitemap",
     "start": "next start",
