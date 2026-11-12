@@ -1,6 +1,7 @@
 'use client';
 
 import { Component } from 'react';
+import { gtmEvent } from '../utils/analytics';
 
 class ErrorBoundary extends Component {
   constructor(props) {
@@ -13,11 +14,25 @@ class ErrorBoundary extends Component {
   }
 
   componentDidCatch(error, errorInfo) {
-    // En producción, enviar error a servicio de monitoreo
-    if (process.env.NODE_ENV === 'production') {
-      // Aquí se podría enviar a Sentry, LogRocket, etc.
+    console.error('[ErrorBoundary] Error capturado en la interfaz:', error, errorInfo);
+
+    try {
+      gtmEvent('exception', {
+        description: error?.message || String(error),
+        fatal: true,
+        page_path: typeof window !== 'undefined' ? window.location.pathname : '',
+        component_stack: errorInfo?.componentStack
+          ? errorInfo.componentStack.trim().slice(0, 500)
+          : undefined,
+      });
+    } catch (_) {
+      // Evitar que un fallo en telemetría interrumpa el renderizado del fallback
     }
   }
+
+  handleReset = () => {
+    this.setState({ hasError: false, error: null });
+  };
 
   render() {
     if (this.state.hasError) {
@@ -43,14 +58,24 @@ class ErrorBoundary extends Component {
               Algo salió mal
             </h1>
             <p className="text-gray-600 mb-6">
-              Ha ocurrido un error inesperado. Por favor, intenta recargar la página.
+              Ha ocurrido un error inesperado. Por favor, intenta nuevamente o recarga la página.
             </p>
-            <button
-              onClick={() => window.location.reload()}
-              className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors"
-            >
-              Recargar página
-            </button>
+            <div className="flex items-center justify-center gap-3">
+              <button
+                type="button"
+                onClick={this.handleReset}
+                className="bg-gray-200 text-gray-800 px-4 py-2 rounded-lg hover:bg-gray-300 transition-colors"
+              >
+                Reintentar
+              </button>
+              <button
+                type="button"
+                onClick={() => window.location.reload()}
+                className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors"
+              >
+                Recargar página
+              </button>
+            </div>
           </div>
         </div>
       );
@@ -60,4 +85,4 @@ class ErrorBoundary extends Component {
   }
 }
 
-export default ErrorBoundary; 
+export default ErrorBoundary;
