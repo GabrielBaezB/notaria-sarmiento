@@ -26,7 +26,54 @@ const DESTINATARIOS = {
 };
 
 const COOLDOWN_MS = 60000; // 60s entre envíos para mitigar spam
+const COOLDOWN_STORAGE_KEY = 'notaria_contact_last_submit_at';
 const MIN_FILL_TIME_MS = 2500; // Tiempo mínimo humano para completar el formulario
+
+const MAX_LENGTHS = {
+  nombre: 100,
+  correo: 150,
+  telefono: 20,
+  asunto: 150,
+  mensaje: 2000
+};
+
+// Sanitización básica: elimina caracteres de control y etiquetas HTML (< >), y recorta a longitud máxima
+function sanitizeField(value, maxLength, allowMultiline = false) {
+  const raw = String(value || '')
+    .replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F\u007F]/g, '')
+    .replace(/[<>]/g, '');
+
+  const normalized = allowMultiline
+    ? raw.replace(/\r\n/g, '\n').replace(/\n{4,}/g, '\n\n\n').trim()
+    : raw.replace(/\s+/g, ' ').trim();
+
+  return normalized.slice(0, maxLength);
+}
+
+function getStoredLastSubmit(fallbackRefValue) {
+  try {
+    const stored =
+      localStorage.getItem(COOLDOWN_STORAGE_KEY) ||
+      sessionStorage.getItem(COOLDOWN_STORAGE_KEY);
+    const parsed = stored ? Number(stored) : 0;
+    return Number.isFinite(parsed) ? Math.max(parsed, fallbackRefValue) : fallbackRefValue;
+  } catch (_) {
+    return fallbackRefValue;
+  }
+}
+
+function setStoredLastSubmit(timestamp) {
+  try {
+    localStorage.setItem(COOLDOWN_STORAGE_KEY, String(timestamp));
+  } catch (_) {
+    // Ignorar si localStorage está bloqueado
+  }
+  try {
+    sessionStorage.setItem(COOLDOWN_STORAGE_KEY, String(timestamp));
+  } catch (_) {
+    // Ignorar si sessionStorage está bloqueado
+  }
+}
 
 export default function Contacto() {
   const [destinoKey, setDestinoKey] = useState('escrituras');
@@ -55,19 +102,38 @@ export default function Contacto() {
       return;
     }
 
-    // 2. Rate-limiting en cliente (cooldown entre envíos)
-    if (now - lastSubmitAtRef.current < COOLDOWN_MS) {
-      const remainingSec = Math.ceil((COOLDOWN_MS - (now - lastSubmitAtRef.current)) / 1000);
+    // 2. Rate-limiting persistente en cliente (cooldown entre envíos resistente a recargas)
+    const lastSubmitAt = getStoredLastSubmit(lastSubmitAtRef.current);
+    if (now - lastSubmitAt < COOLDOWN_MS) {
+      const remainingSec = Math.ceil((COOLDOWN_MS - (now - lastSubmitAt)) / 1000);
       showWarning(`Por favor espera ${remainingSec} segundos antes de enviar otro mensaje.`);
       return;
     }
 
+    // 3. Sanitización y validación de longitudes antes de enviar a FormSubmit
     const destinoConfig = DESTINATARIOS[destinoKey] || DESTINATARIOS.general;
-    const nombre = String(formData.get('nombre') || '').trim();
-    const correo = String(formData.get('correo') || '').trim();
-    const telefono = String(formData.get('telefono') || '').trim();
-    const asunto = String(formData.get('_subject') || '').trim();
-    const mensaje = String(formData.get('mensaje') || '').trim();
+    const nombre = sanitizeField(formData.get('nombre'), MAX_LENGTHS.nombre);
+    const correo = sanitizeField(formData.get('correo'), MAX_LENGTHS.correo);
+    const telefono = sanitizeField(formData.get('telefono'), MAX_LENGTHS.telefono);
+    const asunto = sanitizeField(formData.get('_subject'), MAX_LENGTHS.asunto);
+    const mensaje = sanitizeField(formData.get('mensaje'), MAX_LENGTHS.mensaje, true);
+
+    if (nombre.length < 2) {
+      showWarning('Por favor ingresa un nombre válido (mínimo 2 caracteres).');
+      return;
+    }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(correo)) {
+      showWarning('Por favor ingresa un correo electrónico válido.');
+      return;
+    }
+    if (asunto.length < 3) {
+      showWarning('Por favor ingresa un asunto válido (mínimo 3 caracteres).');
+      return;
+    }
+    if (mensaje.length < 10) {
+      showWarning('Por favor detalla un poco más tu mensaje (mínimo 10 caracteres).');
+      return;
+    }
 
     setIsSubmitting(true);
     setFallbackMailto(null);
@@ -96,7 +162,9 @@ export default function Contacto() {
         throw new Error('No se pudo procesar el envío en el servidor de correo.');
       }
 
-      lastSubmitAtRef.current = Date.now();
+      const submittedAt = Date.now();
+      lastSubmitAtRef.current = submittedAt;
+      setStoredLastSubmit(submittedAt);
       showSuccess('¡Mensaje enviado con éxito! Te responderemos a la brevedad.');
       form.reset();
       setDestinoKey('escrituras');
@@ -246,16 +314,21 @@ export default function Contacto() {
               Envíanos un mensaje
             </h3>
 
-            <form onSubmit={handleSubmit} className="space-y-6">
-              {/* Honeypot oculto contra bots de spam */}
-              <input
-                type="text"
-                name="_honey"
-                tabIndex={-1}
-                autoComplete="off"
-                className="hidden"
+            <form onSubmit={handleSubmit} className="space-y-6 relative">
+              {/* Honeypot posicionado fuera de pantalla (sin display:none para que los bots no lo ignoren) */}
+              <div
                 aria-hidden="true"
-              />
+                className="absolute -left-[9999px] top-auto w-px h-px overflow-hidden opacity-0 pointer-events-none"
+              >
+                <label htmlFor="website_url">Sitio web</label>
+                <input
+                  id="website_url"
+                  type="text"
+                  name="_honey"
+                  tabIndex={-1}
+                  autoComplete="new-password"
+                />
+              </div>
 
               {/* Destino (usa claves lógicas sin exponer los emails en el DOM) */}
               <div>
@@ -290,6 +363,8 @@ export default function Contacto() {
                   name="nombre"
                   type="text"
                   placeholder="Tu nombre completo"
+                  minLength={2}
+                  maxLength={MAX_LENGTHS.nombre}
                   required
                   className="w-full h-12 px-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-notaria-dorado focus:border-transparent transition-all duration-200"
                 />
@@ -305,6 +380,7 @@ export default function Contacto() {
                   name="correo"
                   type="email"
                   placeholder="tu@email.com"
+                  maxLength={MAX_LENGTHS.correo}
                   required
                   className="w-full h-12 px-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-notaria-dorado focus:border-transparent transition-all duration-200"
                 />
@@ -320,6 +396,7 @@ export default function Contacto() {
                   name="telefono"
                   type="tel"
                   placeholder="+56 9 1234 5678"
+                  maxLength={MAX_LENGTHS.telefono}
                   pattern="(\+56)?[0-9\s-]{8,15}"
                   title="Formato: +56 9 1234 5678 o 9 1234 5678"
                   className="w-full h-12 px-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-notaria-dorado focus:border-transparent transition-all duration-200"
@@ -336,6 +413,8 @@ export default function Contacto() {
                   name="_subject"
                   type="text"
                   placeholder="¿En qué podemos ayudarte?"
+                  minLength={3}
+                  maxLength={MAX_LENGTHS.asunto}
                   required
                   className="w-full h-12 px-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-notaria-dorado focus:border-transparent transition-all duration-200"
                 />
@@ -351,6 +430,8 @@ export default function Contacto() {
                   name="mensaje"
                   placeholder="Describe tu consulta o solicitud..."
                   rows={5}
+                  minLength={10}
+                  maxLength={MAX_LENGTHS.mensaje}
                   required
                   className="w-full min-h-[140px] px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-notaria-dorado focus:border-transparent transition-all duration-200 resize-vertical"
                 />
