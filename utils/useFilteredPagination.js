@@ -10,65 +10,137 @@ export function useYearLazyData(indexUrl, filePrefix) {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const yearCacheRef = useRef(new Map());
 
-  const loadYearData = useCallback(async (targetYear, availableYears = yearsIndex) => {
+  const yearCacheRef = useRef(new Map());
+  const yearsIndexRef = useRef([]);
+  const indexPromiseRef = useRef(null);
+  const abortControllerRef = useRef(null);
+  const requestIdRef = useRef(0);
+
+  const loadYearData = useCallback(async (targetYear, explicitYears) => {
     if (!targetYear) return;
+
+    // Cancelar cualquier petición anterior en curso para evitar condiciones de carrera
+    if (abortControllerRef.current) {
+      abortControllerRef.current.abort();
+    }
+    const controller = new AbortController();
+    abortControllerRef.current = controller;
+    const currentRequestId = ++requestIdRef.current;
+
+    const isCurrentRequest = () =>
+      currentRequestId === requestIdRef.current && !controller.signal.aborted;
+
     setLoading(true);
     setError(null);
 
     try {
       if (targetYear === 'ALL') {
-        const yearsToLoad = availableYears.map((y) => y.ano);
+        let availableYears = explicitYears ?? yearsIndexRef.current;
+
+        // Si se invocó changeYear('ALL') antes de que termine la carga del índice inicial, esperar
+        if ((!availableYears || availableYears.length === 0) && indexPromiseRef.current) {
+          availableYears = await indexPromiseRef.current;
+        }
+        if (!isCurrentRequest()) return;
+
+        const yearsToLoad = (availableYears || []).map((y) => y.ano).filter(Boolean);
         const missingYears = yearsToLoad.filter((yr) => !yearCacheRef.current.has(yr));
 
         if (missingYears.length > 0) {
-          const responses = await Promise.all(
+          const results = await Promise.allSettled(
             missingYears.map(async (yr) => {
-              const res = await fetch(`/data/${filePrefix}-${yr}.json`);
+              const res = await fetch(`/data/${filePrefix}-${yr}.json`, {
+                signal: controller.signal
+              });
               if (!res.ok) throw new Error(`Error al cargar el año ${yr}`);
               const json = await res.json();
               return [yr, json];
             })
           );
-          for (const [yr, json] of responses) {
-            yearCacheRef.current.set(yr, json);
+
+          if (!isCurrentRequest()) return;
+
+          const failedErrors = [];
+          for (const result of results) {
+            if (result.status === 'fulfilled') {
+              const [yr, json] = result.value;
+              yearCacheRef.current.set(yr, json);
+            } else if (result.reason?.name !== 'AbortError') {
+              failedErrors.push(result.reason?.message || 'Error al cargar datos de un año');
+            }
           }
+
+          const combined = yearsToLoad.flatMap((yr) => yearCacheRef.current.get(yr) || []);
+          setData(combined);
+
+          if (failedErrors.length > 0 && combined.length === 0) {
+            setError(failedErrors[0]);
+          }
+          return;
         }
 
         const combined = yearsToLoad.flatMap((yr) => yearCacheRef.current.get(yr) || []);
-        setData(combined);
+        if (isCurrentRequest()) {
+          setData(combined);
+        }
       } else {
         if (!yearCacheRef.current.has(targetYear)) {
-          const response = await fetch(`/data/${filePrefix}-${targetYear}.json`);
+          const response = await fetch(`/data/${filePrefix}-${targetYear}.json`, {
+            signal: controller.signal
+          });
           if (!response.ok) throw new Error(`Error al cargar los datos del año ${targetYear}`);
           const jsonData = await response.json();
+          if (!isCurrentRequest()) return;
           yearCacheRef.current.set(targetYear, jsonData);
         }
-        setData(yearCacheRef.current.get(targetYear) || []);
+
+        if (isCurrentRequest()) {
+          setData(yearCacheRef.current.get(targetYear) || []);
+        }
       }
     } catch (err) {
+      if (err?.name === 'AbortError' || !isCurrentRequest()) return;
       setError(err.message);
     } finally {
-      setLoading(false);
+      if (isCurrentRequest()) {
+        setLoading(false);
+      }
     }
-  }, [filePrefix, yearsIndex]);
+  }, [filePrefix]);
 
   useEffect(() => {
     let isMounted = true;
+    const indexController = new AbortController();
+
+    yearCacheRef.current.clear();
+    yearsIndexRef.current = [];
+    requestIdRef.current = 0;
+
+    const fetchIndex = async () => {
+      const res = await fetch(indexUrl, { signal: indexController.signal });
+      if (!res.ok) throw new Error('Error al cargar el índice de años');
+      const indexJson = await res.json();
+      yearsIndexRef.current = indexJson;
+      return indexJson;
+    };
 
     const init = async () => {
       try {
-        const res = await fetch(indexUrl);
-        if (!res.ok) throw new Error('Error al cargar el índice de años');
-        const indexJson = await res.json();
+        const indexPromise = fetchIndex();
+        indexPromiseRef.current = indexPromise;
+        const indexJson = await indexPromise;
         if (!isMounted) return;
 
         setYearsIndex(indexJson);
-        const defaultYear = indexJson[0]?.ano || '';
-        setSelectedYear(defaultYear);
-        await loadYearData(defaultYear, indexJson);
+        // Solo cargar el año por defecto si el usuario no seleccionó otro año mientras cargaba el índice
+        if (requestIdRef.current === 0) {
+          const defaultYear = indexJson[0]?.ano || '';
+          setSelectedYear(defaultYear);
+          await loadYearData(defaultYear, indexJson);
+        }
       } catch (err) {
+        if (err?.name === 'AbortError') return;
         if (isMounted) {
           setError(err.message);
           setLoading(false);
@@ -79,8 +151,13 @@ export function useYearLazyData(indexUrl, filePrefix) {
     init();
     return () => {
       isMounted = false;
+      indexController.abort();
+      if (abortControllerRef.current) {
+        abortControllerRef.current.abort();
+      }
+      requestIdRef.current += 1;
     };
-  }, [indexUrl]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [indexUrl, loadYearData]);
 
   const changeYear = useCallback((newYear) => {
     setSelectedYear(newYear);
