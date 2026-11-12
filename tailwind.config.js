@@ -11,6 +11,10 @@ module.exports = {
         'notaria-blanco': '#FFFFFF',
         'notaria-gris': '#F5F5F5',
         'notaria-dorado': '#C5A880',
+        'afc-azul': '#0E509E',
+        'afc-celeste': '#00B6D8',
+        'afc-gris': '#53575B',
+        'afc-rojo': '#E20D14',
       },
       animation: {
         'fade-in-up': 'fadeInUp 0.6s ease-out',

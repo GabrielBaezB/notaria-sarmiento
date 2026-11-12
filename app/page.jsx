@@ -1,6 +1,7 @@
 import dynamic from 'next/dynamic';
 import ServiciosSection from '../components/ServiciosSection';
 import SeguimientoBanner from '../components/SeguimientoBanner';
+import AfcBanner from '../components/AfcBanner';
 import Hero from '../components/Hero';
 
 // Lazy load de componentes debajo del pliegue para mejorar LCP
@@ -31,6 +32,7 @@ export const metadata = {
 export default function Home() {
   return (
     <main className="min-h-screen">
+      <AfcBanner />
       <ServiciosSection />
       <SeguimientoBanner />
       <Hero />

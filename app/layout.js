@@ -6,6 +6,7 @@ import Header from '../components/Header';
 import GoogleTagManager from '../components/GoogleTagManager';
 import WhatsAppButtonWrapper from '../components/WhatsAppButtonWrapper';
 import KioskInactivityTimer from '../components/KioskInactivityTimer';
+import AfcModal from '../components/AfcModal';
 
 export const metadata = {
   metadataBase: new URL('https://notariasarmiento.cl'),
@@ -138,6 +139,7 @@ export default function RootLayout({ children }) {
         
         <ErrorBoundary>
           <Header />
+          <AfcModal />
           {children}
           <WhatsAppButtonWrapper />
         </ErrorBoundary>

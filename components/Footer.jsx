@@ -1,10 +1,11 @@
 import Link from 'next/link';
+import Image from 'next/image';
 
 export default function Footer() {
   return (
     <footer className="bg-notaria-azul text-notaria-blanco py-12">
       <div className="max-w-6xl mx-auto px-6">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-8 items-start">
           {/* Información de Contacto */}
           <div>
             <h3 className="text-xl font-bold mb-4">Contacto</h3>
@@ -52,6 +53,28 @@ export default function Footer() {
                 Venta de Inmueble
               </Link>
             </div>
+          </div>
+
+          {/* Sello Oficial Alianza AFC - Manual de Marca Pág. 7 */}
+          <div className="flex flex-col items-center md:items-end">
+            <a
+              href="https://www.afc.cl"
+              target="_blank"
+              rel="noopener noreferrer"
+              title="Alianza Notaría en Línea - AFC Chile Seguro de Cesantía (afc.cl)"
+              className="bg-white rounded-2xl p-5 shadow-lg hover:shadow-xl transition-shadow duration-300 flex flex-col items-center text-center group"
+            >
+              <Image
+                src="/afc/sello-notaria-en-linea-afc.png"
+                alt="Sello Oficial Notaría en Línea - AFC Chile Seguro de Cesantía"
+                width={130}
+                height={130}
+                className="w-28 h-28 object-contain"
+              />
+              <span className="mt-2 text-xs font-bold text-afc-azul group-hover:underline">
+                Finiquito en línea • afc.cl
+              </span>
+            </a>
           </div>
         </div>
 
