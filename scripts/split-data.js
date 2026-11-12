@@ -5,6 +5,17 @@ const ESCRITURAS_PATH = path.join(__dirname, '../public/data.json');
 const VEHICULOS_PATH = path.join(__dirname, '../public/data_vehiculo.json');
 const DATA_DIR = path.join(__dirname, '../public/data');
 
+function cleanPrefixFiles(dirPath, prefix, indexFilename) {
+  if (!fs.existsSync(dirPath)) return;
+  const filePattern = new RegExp(`^${prefix}-.+\\.json$`);
+
+  for (const entry of fs.readdirSync(dirPath)) {
+    if (filePattern.test(entry) || entry === indexFilename) {
+      fs.unlinkSync(path.join(dirPath, entry));
+    }
+  }
+}
+
 function splitDataset(sourcePath, prefix, indexFilename, getYear) {
   if (!fs.existsSync(sourcePath)) return;
 
@@ -15,6 +26,9 @@ function splitDataset(sourcePath, prefix, indexFilename, getYear) {
   const rawJson = fs.readFileSync(sourcePath, 'utf-8');
   const allData = JSON.parse(rawJson);
 
+  // Limpiar archivos previos del mismo prefijo para no dejar años obsoletos/huérfanos
+  cleanPrefixFiles(DATA_DIR, prefix, indexFilename);
+
   const byYear = new Map();
   for (const record of allData) {
     const yr = getYear(record);
@@ -24,7 +38,7 @@ function splitDataset(sourcePath, prefix, indexFilename, getYear) {
   }
 
   const yearsIndex = Array.from(byYear.entries())
-    .sort((a, b) => (parseInt(b[0]) || 0) - (parseInt(a[0]) || 0))
+    .sort((a, b) => (parseInt(b[0], 10) || 0) - (parseInt(a[0], 10) || 0))
     .map(([ano, records]) => {
       fs.writeFileSync(path.join(DATA_DIR, `${prefix}-${ano}.json`), JSON.stringify(records), 'utf-8');
       return { ano, count: records.length };
