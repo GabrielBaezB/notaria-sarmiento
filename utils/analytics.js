@@ -1,6 +1,6 @@
 // utils/analytics.js
 export const GA_TRACKING_ID = process.env.NEXT_PUBLIC_GA_ID;
-export const GTM_ID = process.env.NEXT_PUBLIC_GTM_ID;
+export const GTM_ID = process.env.NEXT_PUBLIC_GTM_ID || 'GTM-K2CG5N2W';
 
 // Google Tag Manager
 export const gtmPageview = (url) => {

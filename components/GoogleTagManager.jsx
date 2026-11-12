@@ -3,11 +3,13 @@
 import { useEffect } from 'react';
 import { usePathname } from 'next/navigation';
 import Script from 'next/script';
+import { GTM_ID } from '../utils/analytics';
 
 export default function GoogleTagManager() {
   const pathname = usePathname();
 
   useEffect(() => {
+    if (!GTM_ID) return;
     // Push page view to dataLayer
     if (typeof window !== 'undefined' && window.dataLayer) {
       window.dataLayer.push({
@@ -22,6 +24,8 @@ export default function GoogleTagManager() {
     }
   }, [pathname]);
 
+  if (!GTM_ID) return null;
+
   return (
     <Script
       id="google-tag-manager"
@@ -32,7 +36,7 @@ export default function GoogleTagManager() {
           new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
           j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.defer=true;j.src=
           'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-          })(window,document,'script','dataLayer','GTM-K2CG5N2W');
+          })(window,document,'script','dataLayer',${JSON.stringify(GTM_ID)});
         `
       }}
     />

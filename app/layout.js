@@ -1,6 +1,7 @@
 //app/layout.js
 import './globals.css';
 import { siteConfig, generateStructuredData } from '../utils/seo';
+import { GTM_ID } from '../utils/analytics';
 import ErrorBoundary from '../components/ErrorBoundary';
 import Header from '../components/Header';
 import GoogleTagManager from '../components/GoogleTagManager';
@@ -130,7 +131,7 @@ export default function RootLayout({ children }) {
         {/* Google Tag Manager (noscript) */}
         <noscript>
           <iframe 
-            src="https://www.googletagmanager.com/ns.html?id=GTM-K2CG5N2W"
+            src={`https://www.googletagmanager.com/ns.html?id=${GTM_ID}`}
             height="0" 
             width="0" 
             style={{display: 'none', visibility: 'hidden'}}
